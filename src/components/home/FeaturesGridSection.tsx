@@ -3,7 +3,7 @@ import { MessageSquare, Zap, PlayCircle, Target } from "lucide-react";
 export function FeaturesGridSection() {
   return (
     <section className="py-24 bg-white">
-      <div className="container px-4 mx-auto lg:px-24 xl:px-44">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
         <div className="text-center mb-16">
           <div className="reveal inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-bold text-[#0B56D5] uppercase bg-blue-50 rounded-full border border-blue-100 tracking-widest">
             Đặc quyền của bạn

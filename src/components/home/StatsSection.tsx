@@ -3,7 +3,7 @@ import { StatCard } from "./StatCard";
 export function StatsSection() {
   return (
     <section className="py-16 bg-white border-y border-slate-100">
-      <div className="container px-4 mx-auto lg:px-24 xl:px-44">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 divide-x divide-slate-100">
           <StatCard value={12000} suffix="+" label="Học viên tin dùng" delay={0} />
           <StatCard value={98} suffix="%" label="Tỷ lệ hài lòng" delay={100} />

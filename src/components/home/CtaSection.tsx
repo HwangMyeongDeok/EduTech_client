@@ -4,7 +4,7 @@ import { Zap, ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 export function CtaSection() {
   return (
     <section className="py-20 bg-white">
-      <div className="container px-4 mx-auto lg:px-24 xl:px-44">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
         <div className="reveal-scale relative overflow-hidden bg-gradient-to-br from-[#0B56D5] via-[#1264E8] to-[#0944B8] rounded-[2.5rem] p-12 md:p-20 animate-gradientShift">
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[80px]" />

@@ -20,7 +20,7 @@ export function HeroSection() {
                 }} />
             </div>
 
-            <div className="container relative z-10 px-4 mx-auto lg:px-24 xl:px-44">
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
                 <div className="text-center max-w-5xl mx-auto">
 
                     {/* Badge */}

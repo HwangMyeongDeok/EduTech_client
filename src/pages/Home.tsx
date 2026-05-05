@@ -6,6 +6,8 @@ import { AiExperienceSection } from "@/components/home/AiExperienceSection";
 import { FeaturesGridSection } from "@/components/home/FeaturesGridSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CtaSection } from "@/components/home/CtaSection";
+import { PricingSection } from "@/components/home/PricingSection";
+import { FaqSection } from "@/components/home/FaqSection";
 
 export default function Home() {
   return (
@@ -17,6 +19,8 @@ export default function Home() {
       <AiExperienceSection />
       <FeaturesGridSection />
       <TestimonialsSection />
+      <PricingSection />
+      <FaqSection />
       <CtaSection />
     </div>
   );

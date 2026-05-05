@@ -5,7 +5,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 export function SeamlessLearningSection() {
     return (
         <section className="py-24 bg-white relative overflow-hidden">
-            <div className="container px-4 mx-auto lg:px-24 xl:px-44">
+            <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
                 <div className="text-center max-w-3xl mx-auto mb-20">
                     <div className="reveal inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-bold text-[#0B56D5] uppercase bg-blue-50 rounded-full border border-blue-100 tracking-widest">
                         Cách học của chúng tôi

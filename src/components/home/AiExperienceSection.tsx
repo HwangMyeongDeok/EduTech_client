@@ -10,7 +10,7 @@ export function AiExperienceSection() {
           <div className="absolute bottom-0 right-0 w-80 h-80 bg-indigo-200/30 rounded-full blur-[100px]" />
         </div>
 
-        <div className="container px-4 mx-auto lg:px-24 xl:px-44">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
           <div className="text-center mb-16">
             <h2 className="reveal text-3xl font-extrabold text-slate-900 md:text-4xl lg:text-5xl leading-tight">
               Trải nghiệm học tập với AI

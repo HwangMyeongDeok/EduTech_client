@@ -3,7 +3,8 @@ import { Star } from "lucide-react";
 export function TestimonialsSection() {
   return (
     <section className="py-20 bg-gradient-to-br from-[#EEF3FC] to-[#E8F0FF] overflow-hidden">
-      <div className="container px-4 mx-auto lg:px-24 xl:px-44">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
+        
         <div className="text-center mb-12">
           <h2 className="reveal text-3xl font-extrabold text-slate-900 md:text-4xl">
             Học viên nói gì về <span className="gradient-text">MACO</span>?
