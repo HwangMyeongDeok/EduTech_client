@@ -55,7 +55,7 @@ function FaqItem({
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left"
+        className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left cursor-pointer"
       >
         <span
           className={cn(
@@ -117,7 +117,7 @@ export function FaqSection() {
             </p>
             <a
               href="#"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B56D5] hover:underline underline-offset-2"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0B56D5] hover:underline underline-offset-2 cursor-pointer"
             >
               Liên hệ hỗ trợ →
             </a>

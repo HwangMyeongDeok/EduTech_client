@@ -75,7 +75,7 @@ export function SeamlessLearningSection() {
                                     <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900">{step.title}</h3>
                                 </div>
                                 <p className="text-slate-500 leading-relaxed text-lg">{step.desc}</p>
-                                <button className="group mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#0B56D5] hover:gap-3 transition-all duration-200">
+                                <button className="group mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#0B56D5] hover:gap-3 transition-all duration-200 cursor-pointer">
                                     Tìm hiểu thêm
                                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                 </button>

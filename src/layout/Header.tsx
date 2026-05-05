@@ -37,7 +37,7 @@ export default function Header() {
     >
       <div className="container mx-auto flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2.5 group cursor-pointer">
           <div className="relative flex items-center justify-center w-9 h-9">
             <div className="absolute inset-0 bg-[#0B56D5] rounded-xl" />
             <Hexagon className="relative z-10 w-5 h-5 text-white fill-current" />
@@ -55,7 +55,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`px-4 py-2 rounded-full transition ${isActive
+                className={`px-4 py-2 rounded-full transition cursor-pointer ${isActive
                     ? "text-[#0B56D5] bg-blue-50"
                     : "text-slate-600 hover:text-[#0B56D5] hover:bg-blue-50/70"
                   }`}
@@ -83,7 +83,7 @@ export default function Header() {
           {/* Mobile Menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full hover:bg-blue-50">
+              <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full hover:bg-blue-50 cursor-pointer">
                 <Menu className="w-5 h-5" />
               </button>
             </SheetTrigger>

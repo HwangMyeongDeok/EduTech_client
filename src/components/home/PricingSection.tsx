@@ -94,7 +94,7 @@ export function PricingSection() {
                 key={type}
                 onClick={() => setBilling(type)}
                 className={cn(
-                  "px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200",
+                  "px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer",
                   billing === type
                     ? "bg-white text-slate-900 shadow-sm"
                     : "text-slate-500 hover:text-slate-700"

@@ -68,8 +68,8 @@ export function AiExperienceSection() {
                         Tại phút <span className="text-blue-400 font-bold">05:20</span>, bài giảng định nghĩa <span className="text-white font-semibold">Closure</span> là một hàm có khả năng "nhớ" scope nơi nó được tạo ra...
                       </p>
                       <div className="flex gap-2 mt-3 pt-3 border-t border-blue-500/20">
-                        <button className="text-[10px] text-blue-400 font-medium bg-blue-600/10 hover:bg-blue-600/20 px-3 py-1.5 rounded-lg transition-colors">📌 Lưu ghi chú</button>
-                        <button className="text-[10px] text-blue-400 font-medium bg-blue-600/10 hover:bg-blue-600/20 px-3 py-1.5 rounded-lg transition-colors">🔁 Hỏi thêm</button>
+                        <button className="text-[10px] text-blue-400 font-medium bg-blue-600/10 hover:bg-blue-600/20 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">📌 Lưu ghi chú</button>
+                        <button className="text-[10px] text-blue-400 font-medium bg-blue-600/10 hover:bg-blue-600/20 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">🔁 Hỏi thêm</button>
                       </div>
                     </div>
                   </div>
@@ -79,7 +79,7 @@ export function AiExperienceSection() {
                     <div className="flex-1 bg-slate-800 border border-slate-600 rounded-xl px-4 py-2.5 text-sm text-slate-400">
                       Đặt câu hỏi về bài học...
                     </div>
-                    <button className="w-9 h-9 flex items-center justify-center bg-blue-600 rounded-xl text-white hover:bg-blue-700 transition-colors">
+                    <button className="w-9 h-9 flex items-center justify-center bg-blue-600 rounded-xl text-white hover:bg-blue-700 transition-colors cursor-pointer">
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>

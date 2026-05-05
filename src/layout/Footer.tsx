@@ -26,13 +26,13 @@ export default function Footer() {
             <div className="flex gap-4">
               <button 
                 aria-label="Share" 
-                className="w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200"
+                className="w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200 cursor-pointer"
               >
                 <Share2 className="w-4 h-4" />
               </button>
               <button 
                 aria-label="Website" 
-                className="w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200"
+                className="w-10 h-10 rounded-full border border-slate-700 flex items-center justify-center text-slate-400 hover:bg-slate-800 hover:text-white transition-all duration-200 cursor-pointer"
               >
                 <Globe className="w-4 h-4" />
               </button>
