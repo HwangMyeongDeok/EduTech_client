@@ -8,6 +8,7 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CtaSection } from "@/components/home/CtaSection";
 import { PricingSection } from "@/components/home/PricingSection";
 import { FaqSection } from "@/components/home/FaqSection";
+import { ScrollToTop } from "@/components/home/ScrollToTop";
 
 export default function Home() {
   return (
@@ -22,6 +23,8 @@ export default function Home() {
       <PricingSection />
       <FaqSection />
       <CtaSection />
+
+      <ScrollToTop />
     </div>
   );
 }
