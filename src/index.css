@@ -284,50 +284,6 @@
 .delay-800 { animation-delay: 0.8s; }
 
 /* ========================================
-   SCROLL-TRIGGERED ANIMATIONS (Intersection Observer)
-======================================== */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-28px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-left.revealed {
-  opacity: 1;
-  transform: translateX(0);
-}
-.reveal-right {
-  opacity: 0;
-  transform: translateX(28px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-right.revealed {
-  opacity: 1;
-  transform: translateX(0);
-}
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.94);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-scale.revealed {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ========================================
    GRADIENT TEXT UTILITY
 ======================================== */
 .gradient-text {
@@ -400,22 +356,4 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: oklch(0.55 0.18 255 / 80%);
-}
-
-/* ========================================
-   SHIMMER EFFECT (for loading / highlights)
-======================================== */
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    oklch(0.45 0.22 255) 0%,
-    oklch(0.65 0.18 220) 40%,
-    oklch(0.75 0.12 200) 60%,
-    oklch(0.45 0.22 255) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
 }

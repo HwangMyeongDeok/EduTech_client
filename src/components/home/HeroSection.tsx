@@ -13,11 +13,6 @@ export function HeroSection() {
                 <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-blue-400/15 blur-[140px] rounded-full animate-floatY" />
                 <div className="absolute top-1/3 -left-32 w-[400px] h-[400px] bg-indigo-400/10 blur-[100px] rounded-full" style={{ animation: "floatY 6s ease-in-out 1s infinite" }} />
                 <div className="absolute bottom-0 -right-20 w-[500px] h-[400px] bg-blue-300/10 blur-[120px] rounded-full" style={{ animation: "floatY 7s ease-in-out 2s infinite" }} />
-                {/* Decorative dots grid */}
-                <div className="absolute inset-0 opacity-30" style={{
-                    backgroundImage: "radial-gradient(circle, #0B56D5 1px, transparent 1px)",
-                    backgroundSize: "48px 48px"
-                }} />
             </div>
 
             <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
