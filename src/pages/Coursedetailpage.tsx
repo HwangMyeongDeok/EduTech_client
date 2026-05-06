@@ -1,269 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
-  Star,
   Users,
-  Clock,
-  Bot,
-  ChevronDown,
-  ChevronUp,
-  Lock,
   Play,
   CheckCircle2,
   Target,
   Sparkles,
   BookOpen,
   MessageSquare,
-  Shield,
-  Zap,
-  Trophy,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { COURSES, formatPrice, type Course, type Chapter } from "@/data/courses.data";
-import { CourseThumbnail } from "@/components/courses/CourseThumbnail";
+import { motion } from "framer-motion";
+import { COURSES, formatPrice } from "@/data/courses.data";
 import { Button } from "@/components/ui/button";
-import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
+import { fadeInUp, staggerContainer, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
-// ─── Star renderer ─────────────────────────────────────────────────────────────
-const StarRating: React.FC<{ rating: number; size?: string }> = ({
-  rating,
-  size = "w-4 h-4",
-}) => (
-  <div className="flex gap-0.5">
-    {[1, 2, 3, 4, 5].map((s) => (
-      <Star
-        key={s}
-        className={`${size} ${
-          s <= Math.round(rating)
-            ? "fill-amber-400 text-amber-400"
-            : "fill-slate-200 text-slate-200"
-        }`}
-      />
-    ))}
-  </div>
-);
+import { StarRating } from "@/components/course-detail/StarRating";
+import { SectionHeader } from "@/components/course-detail/SectionHeader";
+import { ChapterAccordion } from "@/components/course-detail/ChapterAccordion";
+import { StickyPurchaseCard } from "@/components/course-detail/StickyPurchaseCard";
 
-// ─── Chapter Accordion ─────────────────────────────────────────────────────────
-const ChapterAccordion: React.FC<{
-  chapter: Chapter;
-  defaultOpen?: boolean;
-  index: number;
-}> = ({ chapter, defaultOpen = false, index }) => {
-  const [open, setOpen] = useState(defaultOpen);
-
-  return (
-    <motion.div
-      variants={fadeInUp}
-      custom={index * 0.05}
-      className="border border-border rounded-2xl overflow-hidden"
-    >
-      <motion.button
-        onClick={() => setOpen(!open)}
-        whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
-        className="w-full flex items-center justify-between px-6 py-5 cursor-pointer"
-      >
-        <div className="text-left">
-          <p className="text-[10px] font-bold tracking-[0.18em] uppercase text-primary mb-1">
-            {chapter.part}
-          </p>
-          <p className="font-semibold text-foreground text-sm">
-            {chapter.title}
-          </p>
-        </div>
-        <motion.div
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
-        >
-          <ChevronDown className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-        </motion.div>
-      </motion.button>
-
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
-            className="overflow-hidden border-t border-border"
-          >
-            {chapter.lessons.map((lesson, i) => (
-              <motion.div
-                key={lesson.id}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.04, duration: 0.25 }}
-                className={`flex items-center gap-4 px-6 py-3.5 ${
-                  i < chapter.lessons.length - 1 ? "border-b border-border/40" : ""
-                } ${lesson.isLocked ? "opacity-60" : "cursor-pointer"}`}
-                {...(!lesson.isLocked && {
-                  whileHover: { backgroundColor: "rgba(11,86,213,0.03)" },
-                } as object)}
-              >
-                <div
-                  className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    lesson.isLocked ? "bg-muted" : "bg-primary/10"
-                  }`}
-                >
-                  {lesson.isLocked ? (
-                    <Lock className="w-3 h-3 text-muted-foreground" />
-                  ) : (
-                    <Play className="w-2.5 h-2.5 text-primary ml-0.5" />
-                  )}
-                </div>
-                <span className="flex-1 text-sm text-foreground/80">{lesson.title}</span>
-                {lesson.duration && (
-                  <span className="text-xs text-muted-foreground font-mono">
-                    {lesson.duration}
-                  </span>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
-
-// ─── Sticky Sidebar Card ───────────────────────────────────────────────────────
-const StickyPurchaseCard: React.FC<{ course: Course }> = ({ course }) => {
-  return (
-    <motion.div
-      variants={fadeInRight}
-      initial="hidden"
-      animate="visible"
-      custom={0.3}
-      className="sticky top-24"
-    >
-      <motion.div
-        whileHover={{ boxShadow: "0 32px 64px rgba(11,86,213,0.14)", y: -2 }}
-        transition={{ duration: 0.3, ease: EASE_OUT_EXPO }}
-        className="relative rounded-3xl overflow-hidden border border-border/60 bg-card shadow-xl"
-      >
-        {/* Glow background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-indigo-500/10 pointer-events-none" />
-
-        {/* ─── Thumbnail ─── */}
-        <div className="relative h-48 overflow-hidden">
-          <motion.div
-            whileHover={{ scale: 1.08 }}
-            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
-            className="w-full h-full"
-          >
-            <CourseThumbnail
-              thumbnail={course.thumbnail}
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          {/* overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-          {/* badge */}
-          {course.isNew && (
-            <span className="absolute top-3 left-3 text-[10px] font-bold tracking-wider bg-blue-600 text-white px-2.5 py-1 rounded-full shadow">
-              MỚI
-            </span>
-          )}
-        </div>
-
-        {/* ─── Content ─── */}
-        <div className="p-6 relative">
-          {/* Price */}
-          <div className="flex items-end gap-3 mb-6">
-            <span
-              className={`text-3xl font-black tracking-tight ${
-                course.isFree
-                  ? "text-emerald-500"
-                  : "bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent"
-              }`}
-            >
-              {formatPrice(course.price, course.isFree)}
-            </span>
-
-            {course.originalPrice && (
-              <span className="text-sm text-muted-foreground line-through">
-                {formatPrice(course.originalPrice)}
-              </span>
-            )}
-          </div>
-
-          {/* CTA */}
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="mb-5">
-            <Button
-              className="w-full h-12 rounded-xl font-bold text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-500/30 cursor-pointer"
-            >
-              🚀 Đăng ký ngay
-            </Button>
-          </motion.div>
-
-          {/* Trust info */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground mb-5">
-            <div className="flex items-center gap-1">
-              ⭐ {course.rating}
-              <span className="text-[10px]">
-                ({course.reviewCount})
-              </span>
-            </div>
-            <div>👨‍🎓 {course.studentCount.toLocaleString("vi-VN")}</div>
-          </div>
-
-          {/* Divider */}
-          <div className="h-px bg-border my-4" />
-
-          {/* Meta */}
-          <div className="space-y-3.5">
-            <MetaRow
-              icon={<Clock className="w-4 h-4" />}
-              label="Thời lượng"
-              value={course.duration}
-            />
-            <MetaRow
-              icon={<Bot className="w-4 h-4" />}
-              label="Hỗ trợ AI"
-              value="24/7"
-              highlight
-            />
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-};
-
-const MetaRow: React.FC<{
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-  highlight?: boolean;
-}> = ({ icon, label, value, highlight }) => (
-  <div className="flex items-center justify-between text-sm">
-    <div className="flex items-center gap-2 text-muted-foreground">
-      <span>{icon}</span>
-      <span>{label}</span>
-    </div>
-    <span className={`font-semibold ${highlight ? "text-primary" : "text-foreground"}`}>
-      {value}
-    </span>
-  </div>
-);
-
-// ─── Section Header ────────────────────────────────────────────────────────────
-const SectionHeader: React.FC<{
-  icon: React.ReactNode;
-  title: string;
-}> = ({ icon, title }) => (
-  <div className="flex items-center gap-3 mb-7">
-    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
-      {icon}
-    </div>
-    <h2 className="text-xl font-bold text-foreground">{title}</h2>
-  </div>
-);
-
-// ─── Main Detail Page ──────────────────────────────────────────────────────────
 const CourseDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -293,11 +49,9 @@ const CourseDetailPage: React.FC = () => {
     <>
       {/* ── HERO ── */}
       <section className="relative bg-gradient-to-br from-slate-950 via-[#0d1525] to-slate-950 pt-8 pb-20 overflow-hidden">
-        {/* Subtle background glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-20 left-1/4 w-[600px] h-[350px] bg-primary/8 rounded-full blur-[100px]" />
           <div className="absolute bottom-0 right-1/3 w-72 h-72 bg-blue-500/6 rounded-full blur-[80px]" />
-          {/* Grid */}
           <div
             className="absolute inset-0 opacity-[0.025]"
             style={{
@@ -308,7 +62,6 @@ const CourseDetailPage: React.FC = () => {
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
-          {/* Back link */}
           <motion.div
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
@@ -325,14 +78,12 @@ const CourseDetailPage: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* Hero content */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
             className="max-w-3xl"
           >
-            {/* Badge */}
             {course.isNew && (
               <motion.div variants={fadeInUp} custom={0}>
                 <div className="inline-flex items-center gap-1.5 bg-primary/15 text-primary text-xs font-semibold px-3 py-1 rounded-full border border-primary/25 mb-5">
@@ -358,13 +109,11 @@ const CourseDetailPage: React.FC = () => {
               {course.description}
             </motion.p>
 
-            {/* Rating + Instructor */}
             <motion.div
               variants={fadeInUp}
               custom={0.18}
               className="flex flex-wrap items-center gap-5"
             >
-              {/* Stars */}
               <div className="flex items-center gap-2">
                 <StarRating rating={course.rating} />
                 <span className="text-amber-400 font-bold text-base leading-none">
@@ -377,7 +126,6 @@ const CourseDetailPage: React.FC = () => {
 
               <div className="w-px h-5 bg-white/10 hidden sm:block" />
 
-              {/* Instructor */}
               <div className="flex items-center gap-2.5">
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 ring-2 ring-primary/40"
@@ -400,10 +148,8 @@ const CourseDetailPage: React.FC = () => {
       {/* ── BODY ── */}
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-12 lg:py-16">
         <div className="flex flex-col lg:flex-row gap-10 xl:gap-14">
-
-          {/* ── Main content ── */}
           <div className="flex-1 min-w-0 space-y-12">
-
+            
             {/* Chi tiết khóa học */}
             <motion.section
               variants={staggerContainer}
@@ -412,11 +158,7 @@ const CourseDetailPage: React.FC = () => {
               viewport={VIEWPORT_ONCE}
               className="space-y-6"
             >
-              <SectionHeader
-                icon={<BookOpen className="w-4 h-4" />}
-                title="Chi tiết khóa học"
-              />
-
+              <SectionHeader icon={<BookOpen className="w-4 h-4" />} title="Chi tiết khóa học" />
               <motion.p
                 variants={fadeInUp}
                 custom={0}
@@ -425,11 +167,7 @@ const CourseDetailPage: React.FC = () => {
                 {course.description}
               </motion.p>
 
-              <motion.div
-                variants={staggerContainer}
-                className="grid sm:grid-cols-2 gap-5"
-              >
-                {/* Target */}
+              <motion.div variants={staggerContainer} className="grid sm:grid-cols-2 gap-5">
                 <motion.div
                   variants={fadeInUp}
                   custom={0.05}
@@ -441,12 +179,9 @@ const CourseDetailPage: React.FC = () => {
                     <Target className="w-4 h-4 text-primary flex-shrink-0" />
                     <h3 className="font-semibold text-sm text-foreground">Đối tượng học</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {course.target}
-                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{course.target}</p>
                 </motion.div>
 
-                {/* Requirements */}
                 <motion.div
                   variants={fadeInUp}
                   custom={0.1}
@@ -472,10 +207,7 @@ const CourseDetailPage: React.FC = () => {
 
             {/* Lộ trình */}
             <section className="space-y-5">
-              <SectionHeader
-                icon={<Play className="w-4 h-4" />}
-                title="Lộ trình học bài bản"
-              />
+              <SectionHeader icon={<Play className="w-4 h-4" />} title="Lộ trình học bài bản" />
               <motion.div
                 variants={staggerContainer}
                 initial="hidden"
@@ -484,23 +216,14 @@ const CourseDetailPage: React.FC = () => {
                 className="space-y-3"
               >
                 {course.chapters.map((chapter, i) => (
-                  <ChapterAccordion
-                    key={chapter.id}
-                    chapter={chapter}
-                    defaultOpen={i === 0}
-                    index={i}
-                  />
+                  <ChapterAccordion key={chapter.id} chapter={chapter} defaultOpen={i === 0} index={i} />
                 ))}
               </motion.div>
             </section>
 
             {/* Reviews */}
             <section className="space-y-5">
-              <SectionHeader
-                icon={<MessageSquare className="w-4 h-4" />}
-                title="Phản hồi từ học viên"
-              />
-
+              <SectionHeader icon={<MessageSquare className="w-4 h-4" />} title="Phản hồi từ học viên" />
               <motion.div
                 variants={staggerContainer}
                 initial="hidden"

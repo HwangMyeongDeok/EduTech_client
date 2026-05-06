@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Brain, CheckCircle2, Lightbulb, MessageSquare, Sparkles, TrendingUp } from "lucide-react";
+import { Brain, CheckCircle2, Lightbulb, MessageSquare, Sparkles, TrendingUp } from "lucide-react";
 import { fadeInLeft, fadeInRight, fadeInUp, staggerContainer, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
 export function AiExperienceSection() {
   return (
-    <section className="py-28 bg-gradient-to-br from-[#EEF3FC] to-[#E8F0FF] relative overflow-hidden">
+    <section id="ai-experience" className="py-28 bg-gradient-to-br from-[#EEF3FC] to-[#E8F0FF] relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-96 h-96 bg-blue-200/30 rounded-full blur-[100px]" />

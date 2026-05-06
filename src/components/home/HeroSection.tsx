@@ -18,6 +18,14 @@ const item = {
 export function HeroSection() {
   const [videoPaused, setVideoPaused] = useState(false);
 
+  const scrollToAiSection = () => {
+    const aiSection = document.getElementById("ai-experience");
+    if (aiSection) {
+      // Cuộn mượt mà đến section có id tương ứng
+      aiSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 pb-32 overflow-hidden">
       {/* Ambient gradient blobs */}
@@ -79,6 +87,7 @@ export function HeroSection() {
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
               <Button
                 size="lg"
+                onClick={scrollToAiSection}
                 className="group h-14 px-8 text-base font-bold text-white bg-[#0B56D5] rounded-full shadow-xl shadow-blue-500/30 cursor-pointer"
                 style={{ boxShadow: undefined }}
               >
