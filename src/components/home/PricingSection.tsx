@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
+import { fadeInUp, staggerContainer, scaleIn, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
 const plans = [
   {
@@ -69,36 +71,44 @@ export function PricingSection() {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-28 overflow-hidden">
       {/* Subtle background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-50/40 to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-6 lg:px-16 xl:px-24 relative">
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <span className="inline-block text-xs font-semibold text-[#0B56D5] uppercase tracking-widest mb-3">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="text-center mb-14"
+        >
+          <motion.span variants={fadeInUp} custom={0} className="inline-block text-xs font-bold text-[#0B56D5] uppercase tracking-widest mb-4">
             Bảng giá
-          </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-4">
+          </motion.span>
+          <motion.h2 variants={fadeInUp} custom={0.08} className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-5">
             Chọn gói phù hợp với bạn
-          </h2>
-          <p className="text-slate-500 max-w-xl mx-auto text-sm leading-relaxed">
+          </motion.h2>
+          <motion.p variants={fadeInUp} custom={0.14} className="text-slate-500 max-w-xl mx-auto text-[15px] leading-relaxed">
             Bắt đầu miễn phí, nâng cấp khi bạn cần. Không có phí ẩn.
-          </p>
+          </motion.p>
 
           {/* Billing toggle */}
-          <div className="inline-flex items-center gap-1 mt-6 p-1 bg-slate-100 rounded-xl">
+          <motion.div variants={fadeInUp} custom={0.2} className="inline-flex items-center gap-1 mt-7 p-1 bg-slate-100 rounded-xl">
             {(["monthly", "yearly"] as const).map((type) => (
-              <button
+              <motion.button
                 key={type}
                 onClick={() => setBilling(type)}
+                whileTap={{ scale: 0.96 }}
                 className={cn(
-                  "px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer",
+                  "px-5 py-2 text-sm font-medium rounded-lg cursor-pointer",
                   billing === type
                     ? "bg-white text-slate-900 shadow-sm"
                     : "text-slate-500 hover:text-slate-700"
                 )}
+                style={{ transition: "color 0.2s" }}
               >
                 {type === "monthly" ? "Hàng tháng" : (
                   <span className="flex items-center gap-1.5">
@@ -108,21 +118,34 @@ export function PricingSection() {
                     </span>
                   </span>
                 )}
-              </button>
+              </motion.button>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-          {plans.map((plan) => (
-            <div
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch"
+        >
+          {plans.map((plan, i) => (
+            <motion.div
               key={plan.name}
+              variants={scaleIn}
+              custom={i * 0.08}
+              whileHover={
+                !plan.highlight
+                  ? { y: -6, boxShadow: "0 20px 40px rgba(11,86,213,0.1)", transition: { duration: 0.25, ease: EASE_OUT_EXPO } }
+                  : {}
+              }
               className={cn(
-                "relative rounded-2xl p-7 flex flex-col transition-all duration-300",
+                "relative rounded-2xl p-8 flex flex-col",
                 plan.highlight
-                  ? "bg-[#0B56D5] text-white shadow-2xl shadow-blue-500/25 scale-[1.02]"
-                  : "bg-white border border-slate-100 shadow-sm hover:shadow-md"
+                  ? "bg-[#0B56D5] text-white shadow-2xl shadow-blue-500/30 scale-[1.02]"
+                  : "bg-white border border-slate-100 shadow-sm"
               )}
             >
               {plan.badge && (
@@ -133,106 +156,90 @@ export function PricingSection() {
                 </div>
               )}
 
-              <div className="mb-6">
-                <h3
-                  className={cn(
-                    "text-lg font-bold mb-1",
-                    plan.highlight ? "text-white" : "text-slate-900"
-                  )}
-                >
+              <div className="mb-7">
+                <h3 className={cn("text-lg font-bold mb-1.5", plan.highlight ? "text-white" : "text-slate-900")}>
                   {plan.name}
                 </h3>
-                <p
-                  className={cn(
-                    "text-xs leading-relaxed",
-                    plan.highlight ? "text-blue-100" : "text-slate-500"
-                  )}
-                >
+                <p className={cn("text-xs leading-relaxed", plan.highlight ? "text-blue-100" : "text-slate-500")}>
                   {plan.description}
                 </p>
               </div>
 
               {/* Price */}
-              <div className="mb-7">
-                <div className="flex items-end gap-1">
-                  <span
-                    className={cn(
-                      "text-3xl font-extrabold",
-                      plan.highlight ? "text-white" : "text-slate-900"
-                    )}
+              <div className="mb-8">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={billing + plan.name}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25 }}
+                    className="flex items-end gap-1"
                   >
-                    {formatPrice(plan.price[billing])}
-                  </span>
-                  {plan.price[billing] > 0 && (
-                    <span
-                      className={cn(
-                        "text-xs mb-1.5",
-                        plan.highlight ? "text-blue-200" : "text-slate-400"
-                      )}
-                    >
-                      / tháng
+                    <span className={cn("text-4xl font-extrabold tracking-tight", plan.highlight ? "text-white" : "text-slate-900")}>
+                      {formatPrice(plan.price[billing])}
                     </span>
-                  )}
-                </div>
-                {billing === "yearly" && plan.price.yearly > 0 && (
-                  <p
-                    className={cn(
-                      "text-xs mt-1",
-                      plan.highlight ? "text-blue-200" : "text-slate-400"
+                    {plan.price[billing] > 0 && (
+                      <span className={cn("text-xs mb-2", plan.highlight ? "text-blue-200" : "text-slate-400")}>
+                        / tháng
+                      </span>
                     )}
-                  >
-                    Thanh toán{" "}
-                    {formatPrice(plan.price.yearly * 12)}/năm
+                  </motion.div>
+                </AnimatePresence>
+                {billing === "yearly" && plan.price.yearly > 0 && (
+                  <p className={cn("text-xs mt-1.5", plan.highlight ? "text-blue-200" : "text-slate-400")}>
+                    Thanh toán {formatPrice(plan.price.yearly * 12)}/năm
                   </p>
                 )}
               </div>
 
               {/* CTA */}
-              <Button
-                className={cn(
-                  "w-full mb-7 font-semibold",
-                  plan.highlight
-                    ? "bg-white text-[#0B56D5] hover:bg-blue-50"
-                    : plan.name === "Team"
-                    ? "bg-slate-900 text-white hover:bg-slate-800"
-                    : "bg-[#0B56D5] text-white hover:bg-[#0944b0]"
-                )}
-              >
-                {plan.cta}
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className="mb-8">
+                <Button
+                  className={cn(
+                    "w-full font-semibold h-11 rounded-xl cursor-pointer",
+                    plan.highlight
+                      ? "bg-white text-[#0B56D5] hover:bg-blue-50"
+                      : plan.name === "Team"
+                      ? "bg-slate-900 text-white hover:bg-slate-800"
+                      : "bg-[#0B56D5] text-white hover:bg-[#0944b0]"
+                  )}
+                >
+                  {plan.cta}
+                </Button>
+              </motion.div>
 
               {/* Features */}
-              <ul className="space-y-3 flex-1">
+              <ul className="space-y-3.5 flex-1">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm">
                     <Check
-                      className={cn(
-                        "w-4 h-4 mt-0.5 flex-shrink-0",
-                        plan.highlight ? "text-white" : "text-[#0B56D5]"
-                      )}
+                      className={cn("w-4 h-4 mt-0.5 flex-shrink-0", plan.highlight ? "text-white" : "text-[#0B56D5]")}
                     />
-                    <span className={plan.highlight ? "text-blue-50" : "text-slate-600"}>
-                      {f}
-                    </span>
+                    <span className={plan.highlight ? "text-blue-50" : "text-slate-600"}>{f}</span>
                   </li>
                 ))}
                 {plan.excluded.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm opacity-40">
-                    <span className="w-4 h-4 mt-0.5 flex-shrink-0 flex items-center justify-center">
-                      —
-                    </span>
+                  <li key={f} className="flex items-start gap-2.5 text-sm opacity-35">
+                    <span className="w-4 h-4 mt-0.5 flex-shrink-0 flex items-center justify-center">—</span>
                     <span className="text-slate-400 line-through">{f}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Bottom note */}
-        <p className="text-center text-xs text-slate-400 mt-8">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center text-xs text-slate-400 mt-10"
+        >
           Thanh toán an toàn qua VNPay, Momo, thẻ quốc tế. Hủy bất cứ lúc nào.
-        </p>
+        </motion.p>
       </div>
     </section>
   );

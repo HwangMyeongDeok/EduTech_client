@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import MainLayout from "../layout/MainLayout";
 import Home from "../pages/HomePage";
 import CoursesPage from "@/pages/CoursesPage";
-import Coursedetailpage from "@/pages/Coursedetailpage";
+import Coursedetailpage from "@/pages/CourseDetailPage";
 import MacoContent from "@/pages/InstructorPage";
 
 export default function AppRoutes() {

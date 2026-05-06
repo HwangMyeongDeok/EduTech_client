@@ -3,6 +3,7 @@ import { Search, SlidersHorizontal, Star, Users, ChevronDown, Sparkles, X } from
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES, COURSES, formatPrice, type Category, type Course } from "@/data/courses.data";
+import { fadeInUp, staggerContainer, scaleIn, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
 // ─── Category color map ────────────────────────────────────────────────────────
 const categoryColors: Record<string, string> = {
@@ -31,102 +32,106 @@ const CourseCard: React.FC<{ course: Course; index: number }> = ({ course, index
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: (index % 4) * 0.1 }}
+            variants={fadeInUp}
+            custom={(index % 4) * 0.07}
+            whileHover={{
+                y: -8,
+                boxShadow: "0 24px 48px rgba(11,86,213,0.12)",
+                transition: { duration: 0.25, ease: EASE_OUT_EXPO },
+            }}
+            onClick={goToDetail}
+            className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm flex flex-col h-full cursor-pointer"
         >
-            <div
-                onClick={goToDetail}
-                className="group relative bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full cursor-pointer"
-            >
-                {/* ─── Thumbnail ─── */}
-                <div className="relative h-44 overflow-hidden bg-gray-100">
-                    <img
-                        src={course.thumbnail}
-                        alt={course.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        loading="lazy"
-                    />
+            {/* ─── Thumbnail ─── */}
+            <div className="relative h-44 overflow-hidden bg-gray-100">
+                <motion.img
+                    src={course.thumbnail}
+                    alt={course.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
+                />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-80 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-80 pointer-events-none" />
 
-                    {/* Category */}
-                    <span
-                        className={`absolute top-3 left-3 text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full backdrop-blur-md ${colorClass} bg-white/80`}
-                    >
-                        {course.categoryLabel}
+                {/* Category */}
+                <span
+                    className={`absolute top-3 left-3 text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-full backdrop-blur-md ${colorClass} bg-white/80`}
+                >
+                    {course.categoryLabel}
+                </span>
+
+                {/* New badge */}
+                {course.isNew && (
+                    <span className="absolute top-3 right-3 text-[10px] font-bold tracking-wider bg-blue-600 text-white px-2.5 py-1 rounded-full shadow-md">
+                        MỚI
                     </span>
+                )}
+            </div>
 
-                    {/* New badge */}
-                    {course.isNew && (
-                        <span className="absolute top-3 right-3 text-[10px] font-bold tracking-wider bg-blue-600 text-white px-2.5 py-1 rounded-full shadow-md">
-                            MỚI
+            {/* ─── Body ─── */}
+            <div className="p-5 flex flex-col flex-1">
+                {/* Stats */}
+                <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-md">
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        <span className="text-sm font-bold text-amber-600">
+                            {course.rating}
                         </span>
-                    )}
+                    </div>
+
+                    <div className="flex items-center gap-1 text-gray-400">
+                        <Users className="w-3.5 h-3.5" />
+                        <span className="text-xs">
+                            {course.studentCount.toLocaleString("vi-VN")}
+                        </span>
+                    </div>
                 </div>
 
-                {/* ─── Body ─── */}
-                <div className="p-5 flex flex-col flex-1">
-                    {/* Stats */}
-                    <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-1.5 bg-amber-50 px-2.5 py-1 rounded-md">
-                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                            <span className="text-sm font-bold text-amber-600">
-                                {course.rating}
-                            </span>
-                        </div>
+                {/* Title */}
+                <h3 className="font-bold text-gray-900 text-[16px] leading-snug mb-1.5 line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
+                    {course.title}
+                </h3>
 
-                        <div className="flex items-center gap-1 text-gray-400">
-                            <Users className="w-3.5 h-3.5" />
-                            <span className="text-xs">
-                                {course.studentCount.toLocaleString("vi-VN")}
-                            </span>
-                        </div>
-                    </div>
+                {/* Instructor */}
+                <p className="text-xs text-gray-400 mb-4">
+                    {course.instructor}
+                </p>
 
-                    {/* Title */}
-                    <h3 className="font-bold text-gray-900 text-[16px] leading-snug mb-1.5 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                        {course.title}
-                    </h3>
+                <div className="mt-auto" />
 
-                    {/* Instructor */}
-                    <p className="text-xs text-gray-400 mb-4">
-                        {course.instructor}
-                    </p>
-
-                    <div className="mt-auto" />
-
-                    {/* Price + CTA */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div>
-                            <div
-                                className={`font-extrabold text-lg ${
-                                    course.isFree
-                                        ? "text-emerald-500"
-                                        : "text-gray-900"
-                                }`}
-                            >
-                                {formatPrice(course.price, course.isFree)}
-                            </div>
-
-                            {course.originalPrice && (
-                                <div className="text-xs text-gray-400 line-through">
-                                    {formatPrice(course.originalPrice)}
-                                </div>
-                            )}
-                        </div>
-
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                goToDetail();
-                            }}
-                            className="h-9 px-4 rounded-xl text-sm font-bold bg-blue-600 text-white shadow-sm hover:bg-blue-700 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                {/* Price + CTA */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div>
+                        <div
+                            className={`font-extrabold text-lg ${
+                                course.isFree
+                                    ? "text-emerald-500"
+                                    : "text-gray-900"
+                            }`}
                         >
-                            Vào học
-                        </button>
+                            {formatPrice(course.price, course.isFree)}
+                        </div>
+
+                        {course.originalPrice && (
+                            <div className="text-xs text-gray-400 line-through">
+                                {formatPrice(course.originalPrice)}
+                            </div>
+                        )}
                     </div>
+
+                    <motion.button
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.94 }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            goToDetail();
+                        }}
+                        className="h-9 px-4 rounded-xl text-sm font-bold bg-blue-600 text-white shadow-sm cursor-pointer"
+                    >
+                        Vào học
+                    </motion.button>
                 </div>
             </div>
         </motion.div>
@@ -146,31 +151,45 @@ const FilterDropdown: React.FC<{ label: string; options: string[]; value: string
 
     return (
         <div className="relative" ref={ref}>
-            <button
+            <motion.button
                 onClick={() => setOpen(!open)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-all min-w-[140px] justify-between cursor-pointer ${open ? "border-blue-500 bg-blue-50 text-blue-600" : "border-gray-200 bg-white text-gray-600 hover:border-blue-300"}`}
+                whileTap={{ scale: 0.97 }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium min-w-[140px] justify-between cursor-pointer ${
+                    open
+                        ? "border-blue-500 bg-blue-50 text-blue-600"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-blue-300"
+                }`}
+                style={{ transition: "border-color 0.2s, color 0.2s, background-color 0.2s" }}
             >
                 <span>{value}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${open ? "rotate-180 text-blue-500" : "text-gray-400"}`} />
-            </button>
+                <motion.div
+                    animate={{ rotate: open ? 180 : 0 }}
+                    transition={{ duration: 0.25, ease: EASE_OUT_EXPO }}
+                >
+                    <ChevronDown className={`w-4 h-4 ${open ? "text-blue-500" : "text-gray-400"}`} />
+                </motion.div>
+            </motion.button>
             <AnimatePresence>
                 {open && (
-                    <motion.div 
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
+                    <motion.div
+                        initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                        transition={{ duration: 0.2, ease: EASE_OUT_EXPO }}
                         className="absolute top-full left-0 mt-1.5 bg-white border border-gray-100 rounded-xl shadow-xl z-50 min-w-full overflow-hidden"
                     >
                         {options.map(opt => (
-                            <button
+                            <motion.button
                                 key={opt}
                                 onClick={() => { onChange(opt); setOpen(false); }}
-                                className={`w-full text-left px-4 py-2.5 text-sm flex items-center justify-between transition-colors cursor-pointer ${value === opt ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-600 hover:bg-gray-50"}`}
+                                whileHover={{ backgroundColor: opt === value ? undefined : "rgba(0,0,0,0.03)" }}
+                                className={`w-full text-left px-4 py-2.5 text-sm flex items-center justify-between cursor-pointer ${
+                                    value === opt ? "bg-blue-50 text-blue-600 font-bold" : "text-gray-600"
+                                }`}
                             >
                                 {opt}
                                 {value === opt && <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />}
-                            </button>
+                            </motion.button>
                         ))}
                     </motion.div>
                 )}
@@ -190,11 +209,11 @@ const CoursesPage: React.FC = () => {
     const PER_PAGE = 8;
 
     // Kích hoạt khi có ít nhất 1 filter được thay đổi
-    const hasActiveFilters = 
-        activeCategory !== "Tất cả" || 
-        search.trim() !== "" || 
-        priceFilter !== "Mọi mức giá" || 
-        ratingFilter !== "Tất cả đánh giá" || 
+    const hasActiveFilters =
+        activeCategory !== "Tất cả" ||
+        search.trim() !== "" ||
+        priceFilter !== "Mọi mức giá" ||
+        ratingFilter !== "Tất cả đánh giá" ||
         sortBy !== "Mới nhất";
 
     // Hàm xóa toàn bộ bộ lọc
@@ -239,15 +258,14 @@ const CoursesPage: React.FC = () => {
         <div className="min-h-screen bg-[#EEF2FF]">
 
             {/* ── Hero / Header section ── */}
-            {/* Fix z-index để dropdown không bị đè */}
             <section className="relative z-20 bg-[#EEF2FF] pt-14 pb-8 border-b border-blue-100/60">
                 <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
                         {/* Left: Badge + Title + Desc */}
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20 }}
+                        <motion.div
+                            initial={{ opacity: 0, y: 24 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
+                            transition={{ duration: 0.6, ease: EASE_OUT_EXPO }}
                             className="max-w-xl"
                         >
                             <div className="inline-flex items-center gap-2 bg-blue-600/10 text-blue-600 text-[11px] font-bold px-3 py-1.5 rounded-full mb-5 tracking-wider">
@@ -267,10 +285,10 @@ const CoursesPage: React.FC = () => {
                     </div>
 
                     {/* Filter bar + Search */}
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.2, ease: EASE_OUT_EXPO }}
                         className="flex flex-col md:flex-row md:items-center gap-4 mt-8 pt-6 border-t border-blue-100/80"
                     >
                         {/* Left: Filter */}
@@ -308,8 +326,10 @@ const CoursesPage: React.FC = () => {
                                         initial={{ opacity: 0, scale: 0.8, x: -10 }}
                                         animate={{ opacity: 1, scale: 1, x: 0 }}
                                         exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                                        whileTap={{ scale: 0.94 }}
                                         onClick={handleClearFilters}
-                                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-50 transition-all ml-1 cursor-pointer"
+                                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer"
+                                        style={{ transition: "background-color 0.2s, color 0.2s" }}
                                     >
                                         <X className="w-4 h-4" />
                                         <span>Xóa lọc</span>
@@ -326,17 +346,23 @@ const CoursesPage: React.FC = () => {
                                     value={search}
                                     onChange={e => setSearch(e.target.value)}
                                     placeholder="Tìm nội dung bạn muốn học..."
-                                    className="w-full pl-11 pr-10 h-11 rounded-xl border border-gray-200 bg-white shadow-sm text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:border-blue-400 transition-all"
+                                    className="w-full pl-11 pr-10 h-11 rounded-xl border border-gray-200 bg-white shadow-sm text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:border-blue-400"
+                                    style={{ transition: "box-shadow 0.2s, border-color 0.2s" }}
                                 />
                                 {/* Nút X nhỏ xóa text search */}
-                                {search && (
-                                    <button 
-                                        onClick={() => setSearch("")}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 cursor-pointer"
-                                    >
-                                        <X className="w-4 h-4" />
-                                    </button>
-                                )}
+                                <AnimatePresence>
+                                    {search && (
+                                        <motion.button
+                                            initial={{ opacity: 0, scale: 0.7 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.7 }}
+                                            onClick={() => setSearch("")}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1 cursor-pointer"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </motion.button>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         </div>
                     </motion.div>
@@ -348,10 +374,10 @@ const CoursesPage: React.FC = () => {
                 <div className="flex gap-8">
 
                     {/* Sidebar */}
-                    <motion.aside 
+                    <motion.aside
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
+                        transition={{ duration: 0.5, delay: 0.3, ease: EASE_OUT_EXPO }}
                         className="hidden lg:block w-56 flex-shrink-0"
                     >
                         <div className="sticky top-6">
@@ -360,17 +386,21 @@ const CoursesPage: React.FC = () => {
                             </p>
                             <nav className="flex flex-col gap-1">
                                 {CATEGORIES.map(cat => (
-                                    <button
+                                    <motion.button
                                         key={cat}
                                         onClick={() => setActiveCategory(cat)}
-                                        className={`text-left px-4 py-2.5 rounded-xl text-sm font-semibold transition-all flex items-center justify-between cursor-pointer ${activeCategory === cat
-                                            ? "bg-blue-600 text-white shadow-md shadow-blue-200"
-                                            : "text-gray-600 hover:bg-white hover:text-blue-600"
-                                            }`}
+                                        whileHover={activeCategory !== cat ? { x: 3 } : {}}
+                                        whileTap={{ scale: 0.97 }}
+                                        className={`text-left px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-between cursor-pointer ${
+                                            activeCategory === cat
+                                                ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                                                : "text-gray-600 hover:bg-white hover:text-blue-600"
+                                        }`}
+                                        style={{ transition: "background-color 0.2s, color 0.2s" }}
                                     >
                                         {cat}
                                         {activeCategory === cat && <div className="w-1.5 h-1.5 rounded-full bg-white/80" />}
-                                    </button>
+                                    </motion.button>
                                 ))}
                             </nav>
                         </div>
@@ -381,62 +411,91 @@ const CoursesPage: React.FC = () => {
                         {/* Mobile pills */}
                         <div className="lg:hidden flex gap-2 overflow-x-auto pb-4 mb-6 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-16 xl:-mx-24 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 scrollbar-hide">
                             {CATEGORIES.map(cat => (
-                                <button
+                                <motion.button
                                     key={cat}
                                     onClick={() => setActiveCategory(cat)}
-                                    className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border transition-all cursor-pointer ${activeCategory === cat ? "bg-blue-600 text-white border-blue-600" : "border-gray-200 bg-white text-gray-600"
-                                        }`}
+                                    whileTap={{ scale: 0.95 }}
+                                    className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border cursor-pointer ${
+                                        activeCategory === cat
+                                            ? "bg-blue-600 text-white border-blue-600"
+                                            : "border-gray-200 bg-white text-gray-600"
+                                    }`}
+                                    style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
                                 >
                                     {cat}
-                                </button>
+                                </motion.button>
                             ))}
                         </div>
 
-                        {paged.length === 0 ? (
-                            <motion.div 
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="flex flex-col items-center justify-center py-32 bg-white rounded-3xl border border-dashed border-gray-200 text-center"
-                            >
-                                <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                    <Search className="w-7 h-7 text-gray-400" />
-                                </div>
-                                <h3 className="text-lg font-bold text-gray-700 mb-2">Không tìm thấy kết quả</h3>
-                                <p className="text-gray-400 text-sm max-w-xs">Vui lòng thử từ khóa hoặc bộ lọc khác.</p>
-                                <button
-                                    onClick={handleClearFilters}
-                                    className="mt-5 px-5 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:border-blue-400 hover:text-blue-600 transition-all bg-white cursor-pointer"
+                        <AnimatePresence mode="wait">
+                            {paged.length === 0 ? (
+                                <motion.div
+                                    key="empty"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="flex flex-col items-center justify-center py-32 bg-white rounded-3xl border border-dashed border-gray-200 text-center"
                                 >
-                                    Xóa toàn bộ lọc
-                                </button>
-                            </motion.div>
-                        ) : (
-                            <>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-                                    {paged.map((course, i) => (
-                                        <CourseCard key={course.id} course={course} index={i} />
-                                    ))}
-                                </div>
-
-                                {/* Pagination */}
-                                {totalPages > 1 && (
-                                    <div className="flex justify-center items-center gap-2 mt-14 pt-8 border-t border-blue-100/60">
-                                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
-                                            <button
-                                                key={p}
-                                                onClick={() => handlePageChange(p)}
-                                                className={`w-10 h-10 rounded-xl text-sm font-bold transition-all cursor-pointer ${page === p
-                                                    ? "bg-blue-600 text-white shadow-md shadow-blue-200 scale-110"
-                                                    : "bg-white border border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600"
-                                                    }`}
-                                            >
-                                                {p}
-                                            </button>
-                                        ))}
+                                    <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                        <Search className="w-7 h-7 text-gray-400" />
                                     </div>
-                                )}
-                            </>
-                        )}
+                                    <h3 className="text-lg font-bold text-gray-700 mb-2">Không tìm thấy kết quả</h3>
+                                    <p className="text-gray-400 text-sm max-w-xs">Vui lòng thử từ khóa hoặc bộ lọc khác.</p>
+                                    <motion.button
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={{ scale: 0.97 }}
+                                        onClick={handleClearFilters}
+                                        className="mt-5 px-5 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:border-blue-400 hover:text-blue-600 bg-white cursor-pointer"
+                                        style={{ transition: "border-color 0.2s, color 0.2s" }}
+                                    >
+                                        Xóa toàn bộ lọc
+                                    </motion.button>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key={`page-${page}-${activeCategory}-${search}`}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.25 }}
+                                >
+                                    <motion.div
+                                        variants={staggerContainer}
+                                        initial="hidden"
+                                        animate="visible"
+                                        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5"
+                                    >
+                                        {paged.map((course, i) => (
+                                            <CourseCard key={course.id} course={course} index={i} />
+                                        ))}
+                                    </motion.div>
+
+                                    {/* Pagination */}
+                                    {totalPages > 1 && (
+                                        <div className="flex justify-center items-center gap-2 mt-14 pt-8 border-t border-blue-100/60">
+                                            {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+                                                <motion.button
+                                                    key={p}
+                                                    onClick={() => handlePageChange(p)}
+                                                    whileHover={page !== p ? { scale: 1.08, borderColor: "#93c5fd", color: "#2563eb" } : {}}
+                                                    whileTap={{ scale: 0.93 }}
+                                                    animate={page === p ? { scale: 1.12 } : { scale: 1 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className={`w-10 h-10 rounded-xl text-sm font-bold cursor-pointer ${
+                                                        page === p
+                                                            ? "bg-blue-600 text-white shadow-md shadow-blue-200"
+                                                            : "bg-white border border-gray-200 text-gray-600"
+                                                    }`}
+                                                >
+                                                    {p}
+                                                </motion.button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </section>

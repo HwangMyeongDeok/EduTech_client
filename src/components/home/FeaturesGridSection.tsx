@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { MessageSquare, Zap, PlayCircle, Target } from "lucide-react";
+import { fadeInUp, iconHover, staggerContainer, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
 export function FeaturesGridSection() {
   const features = [
@@ -34,78 +35,80 @@ export function FeaturesGridSection() {
   ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-28 bg-white">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
         {/* Header */}
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-bold text-[#0B56D5] uppercase bg-blue-50 rounded-full border border-blue-100 tracking-widest"
-          >
-            Đặc quyền của bạn
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="text-center mb-20"
+        >
+          <motion.div variants={fadeInUp} custom={0}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-5 text-xs font-bold text-[#0B56D5] uppercase bg-blue-50 rounded-full border border-blue-100 tracking-widest">
+              Đặc quyền của bạn
+            </div>
           </motion.div>
-          
+
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl font-extrabold text-slate-900 md:text-4xl lg:text-5xl"
+            variants={fadeInUp}
+            custom={0.1}
+            className="text-3xl font-extrabold text-slate-900 md:text-4xl lg:text-5xl mb-5"
           >
             Hỗ trợ tức thì
             <br />
             <span className="gradient-text">trong từng khoảnh khắc học</span>
           </motion.h2>
-          
+
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="mt-4 text-lg text-slate-500 max-w-2xl mx-auto"
+            variants={fadeInUp}
+            custom={0.18}
+            className="text-lg text-slate-500 max-w-2xl mx-auto"
           >
             AI trả lời và giải thích ngay khi bạn cần, liền mạch, không gián đoạn.
           </motion.p>
-        </div>
+        </motion.div>
 
         {/* Grid */}
-        <div className="grid max-w-6xl grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((item, i) => (
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="grid max-w-6xl grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {features.map((feat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ 
-                duration: 0.5, 
-                delay: i * 0.1, // Stagger hiệu ứng dựa trên index
-                ease: "easeOut" 
-              }}
-              whileHover={{ 
+              variants={fadeInUp}
+              custom={i * 0.08}
+              whileHover={{
                 y: -10,
-                transition: { duration: 0.2 } 
+                boxShadow: "0 24px 48px rgba(11,86,213,0.10)",
+                transition: { duration: 0.25, ease: EASE_OUT_EXPO },
               }}
-              className="group p-8 bg-white border border-slate-100 rounded-[1.75rem] shadow-sm hover:shadow-xl hover:shadow-slate-200/50 text-center flex flex-col items-center cursor-default transition-shadow duration-300"
+              className="group p-9 bg-white border border-slate-100 rounded-[1.75rem] shadow-sm text-center flex flex-col items-center cursor-default"
             >
-              <motion.div 
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className={`flex items-center justify-center w-16 h-16 mb-6 text-white bg-gradient-to-br ${item.gradient} rounded-2xl shadow-lg ${item.shadow}`}
+              <motion.div
+                variants={iconHover}
+                initial="rest"
+                whileHover="hover"
+                className={`flex items-center justify-center w-16 h-16 mb-7 text-white bg-gradient-to-br ${feat.gradient} rounded-2xl shadow-lg ${feat.shadow}`}
               >
-                <item.icon className="w-7 h-7" />
+                <feat.icon className="w-7 h-7" />
               </motion.div>
-              
-              <h3 className="mb-3 text-lg font-bold text-slate-900 group-hover:text-[#0B56D5] transition-colors">
-                {item.title}
+
+              <h3 className="mb-3 text-[17px] font-bold text-slate-900 group-hover:text-[#0B56D5] transition-colors duration-200">
+                {feat.title}
               </h3>
-              
+
               <p className="text-sm text-slate-500 leading-relaxed">
-                {item.desc}
+                {feat.desc}
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

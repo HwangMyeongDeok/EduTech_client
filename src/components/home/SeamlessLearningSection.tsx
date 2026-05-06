@@ -1,47 +1,46 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { fadeInLeft, fadeInRight, fadeInUp, staggerContainer, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
 export function SeamlessLearningSection() {
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-28 bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-bold text-[#0B56D5] uppercase bg-blue-50 rounded-full border border-blue-100 tracking-widest"
-          >
-            Cách học của chúng tôi
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          className="text-center max-w-3xl mx-auto mb-24"
+        >
+          <motion.div variants={fadeInUp} custom={0}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-5 text-xs font-bold text-[#0B56D5] uppercase bg-blue-50 rounded-full border border-blue-100 tracking-widest">
+              Cách học của chúng tôi
+            </div>
           </motion.div>
-          
+
           <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl font-extrabold text-slate-900 md:text-5xl leading-tight"
+            variants={fadeInUp}
+            custom={0.1}
+            className="text-4xl font-extrabold text-slate-900 md:text-5xl leading-tight mb-6"
           >
             Một cách học <span className="gradient-text">liền mạch</span> và được{" "}
             <span className="gradient-text">hỗ trợ ngay</span> trong lúc bạn cần
           </motion.h2>
-          
+
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 text-lg text-slate-500 leading-relaxed"
+            variants={fadeInUp}
+            custom={0.18}
+            className="text-lg text-slate-500 leading-relaxed"
           >
             Nền tảng tích hợp AI giúp bạn hiểu bài, đặt câu hỏi và tiến bộ ngay — không gián đoạn, không mơ hồ.
           </motion.p>
-        </div>
+        </motion.div>
 
         {/* Steps */}
-        <div className="max-w-6xl mx-auto space-y-20">
+        <div className="max-w-6xl mx-auto space-y-24">
           {[
             {
               num: "01",
@@ -83,14 +82,15 @@ export function SeamlessLearningSection() {
             >
               {/* Text Content */}
               <motion.div
-                initial={{ opacity: 0, x: step.side === "left" ? 50 : -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                variants={step.side === "left" ? fadeInRight : fadeInLeft}
+                initial="hidden"
+                whileInView="visible"
+                viewport={VIEWPORT_ONCE}
+                custom={0}
               >
                 <div
                   className={cn(
-                    "inline-flex items-center gap-2 px-3 py-1 mb-4 text-xs font-bold rounded-full border",
+                    "inline-flex items-center gap-2 px-3 py-1 mb-5 text-xs font-bold rounded-full border",
                     step.badgeColor,
                     "border-current/20"
                   )}
@@ -98,22 +98,27 @@ export function SeamlessLearningSection() {
                   {step.badge}
                 </div>
                 <div className="border-l-4 border-[#0B56D5] pl-6 mb-6">
-                  <p className="text-sm font-bold text-slate-400 mb-1">{step.num}</p>
+                  <p className="text-sm font-bold text-slate-400 mb-1 tracking-widest">{step.num}</p>
                   <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900">{step.title}</h3>
                 </div>
-                <p className="text-slate-500 leading-relaxed text-lg">{step.desc}</p>
-                <button className="group mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#0B56D5] hover:gap-3 transition-all duration-200 cursor-pointer">
+                <p className="text-slate-500 leading-relaxed text-[17px] mb-7">{step.desc}</p>
+                <motion.button
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="group inline-flex items-center gap-2 text-sm font-bold text-[#0B56D5] cursor-pointer"
+                >
                   Tìm hiểu thêm
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </motion.button>
               </motion.div>
 
               {/* Image Content */}
               <motion.div
-                initial={{ opacity: 0, x: step.side === "left" ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                variants={step.side === "left" ? fadeInLeft : fadeInRight}
+                initial="hidden"
+                whileInView="visible"
+                viewport={VIEWPORT_ONCE}
+                custom={0.1}
                 className={cn("relative", step.side === "left" && "lg:order-first")}
               >
                 <div className="absolute -inset-3 bg-gradient-to-br from-blue-100/50 to-indigo-100/50 rounded-[2.5rem] blur-xl" />
@@ -124,10 +129,11 @@ export function SeamlessLearningSection() {
                     className="rounded-[1.5rem] w-full object-cover aspect-video"
                   />
                   {/* AI Tooltip overlay */}
-                  <motion.div 
-                    initial={{ y: 20, opacity: 0 }}
+                  <motion.div
+                    initial={{ y: 16, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.4 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5, duration: 0.5, ease: EASE_OUT_EXPO }}
                     className="absolute left-4 bottom-8 right-16 p-4 bg-white/95 backdrop-blur-sm shadow-xl rounded-2xl border border-slate-100"
                   >
                     <div className="flex items-center gap-2 mb-2">
