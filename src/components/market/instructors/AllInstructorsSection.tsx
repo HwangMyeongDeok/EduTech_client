@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { Users, Sparkles } from "lucide-react";
 import { staggerContainerFast, VIEWPORT_ONCE } from "@/lib/motion";
 import { allInstructors, categoryTabs } from "@/data/instructor.data";
-import { InstructorCard } from "@/components/instructors/InstructorCard";
-import { Reveal } from "@/components/instructors/Reveal";
+import { InstructorCard } from "@/components/market/instructors/InstructorCard";
+import { Reveal } from "@/components/market/instructors/Reveal";
 
 export function AllInstructorsSection() {
   const [activeTab, setActiveTab] = useState<string>("all");
@@ -14,8 +14,8 @@ export function AllInstructorsSection() {
   // 1. Thêm logic lọc ở đây
   // Lưu ý: Cậu kiểm tra lại trong file instructor.data.ts xem field category của instructor tên là gì nhé (ví dụ: 'category', 'categoryId', 'type'...)
   // Ở đây mình ví dụ nó là trường 'categoryId'
-  const filteredInstructors = activeTab === "all" 
-    ? allInstructors 
+  const filteredInstructors = activeTab === "all"
+    ? allInstructors
     : allInstructors.filter((instructor) => instructor.categoryId === activeTab);
 
   // Tính số lượng chuyên gia sau khi lọc để hiển thị lên nút (tuỳ chọn cho xịn)
@@ -47,11 +47,10 @@ export function AllInstructorsSection() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer ${
-                activeTab === tab.id
+              className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer ${activeTab === tab.id
                   ? "bg-blue-600 text-white border-blue-600 shadow-sm shadow-blue-500/20"
                   : "bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-600"
-              }`}
+                }`}
             >
               {tab.label}
             </motion.button>

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Users, MapPin } from "lucide-react";
 import { fadeInUp, scaleIn, fadeInLeft, floatCard, floatY } from "@/lib/motion";
-import { StarRow } from "@/components/instructors/InstructorCard";
+import { StarRow } from "@/components/market/instructors/InstructorCard";
 
 export function HeroSection() {
   return (

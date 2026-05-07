@@ -3,8 +3,8 @@ import { Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CATEGORIES, COURSES, type Category } from "@/data/courses.data";
 import { staggerContainer, EASE_OUT_EXPO } from "@/lib/motion";
-import { CourseCard } from "@/components/courses/CourseCard";
-import { FilterDropdown } from "@/components/courses/FilterDropdown";
+import { CourseCard } from "@/components/market/courses/CourseCard";
+import { FilterDropdown } from "@/components/market/courses/FilterDropdown";
 
 const CoursesPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("Tất cả");
@@ -202,11 +202,10 @@ const CoursesPage: React.FC = () => {
                     onClick={() => setActiveCategory(cat)}
                     whileHover={activeCategory !== cat ? { x: 3 } : {}}
                     whileTap={{ scale: 0.97 }}
-                    className={`text-left px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-between cursor-pointer ${
-                      activeCategory === cat
+                    className={`text-left px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-between cursor-pointer ${activeCategory === cat
                         ? "bg-blue-600 text-white shadow-md shadow-blue-200"
                         : "text-gray-600 hover:bg-white hover:text-blue-600"
-                    }`}
+                      }`}
                     style={{ transition: "background-color 0.2s, color 0.2s" }}
                   >
                     {cat}
@@ -228,11 +227,10 @@ const CoursesPage: React.FC = () => {
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   whileTap={{ scale: 0.95 }}
-                  className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border cursor-pointer ${
-                    activeCategory === cat
+                  className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold border cursor-pointer ${activeCategory === cat
                       ? "bg-blue-600 text-white border-blue-600"
                       : "border-gray-200 bg-white text-gray-600"
-                  }`}
+                    }`}
                   style={{ transition: "background-color 0.2s, color 0.2s, border-color 0.2s" }}
                 >
                   {cat}
@@ -299,11 +297,10 @@ const CoursesPage: React.FC = () => {
                           whileTap={{ scale: 0.93 }}
                           animate={page === p ? { scale: 1.12 } : { scale: 1 }}
                           transition={{ duration: 0.2 }}
-                          className={`w-10 h-10 rounded-xl text-sm font-bold cursor-pointer ${
-                            page === p
+                          className={`w-10 h-10 rounded-xl text-sm font-bold cursor-pointer ${page === p
                               ? "bg-blue-600 text-white shadow-md shadow-blue-200"
                               : "bg-white border border-gray-200 text-gray-600"
-                          }`}
+                            }`}
                         >
                           {p}
                         </motion.button>

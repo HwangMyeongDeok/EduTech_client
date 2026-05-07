@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Users } from "lucide-react";
 import { staggerContainer, fadeInUp, EASE_OUT_EXPO, VIEWPORT_ONCE } from "@/lib/motion";
 import { testimonials } from "@/data/instructor.data";
-import { StarRow } from "@/components/instructors/InstructorCard";
-import { Reveal } from "@/components/instructors/Reveal";
+import { StarRow } from "@/components/market/instructors/InstructorCard";
+import { Reveal } from "@/components/market/instructors/Reveal";
 
 export function TestimonialsSection() {
   return (

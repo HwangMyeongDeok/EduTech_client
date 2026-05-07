@@ -2,7 +2,7 @@ import React from "react";
 import { Clock, Bot } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatPrice, type Course } from "@/data/courses.data";
-import { CourseThumbnail } from "@/components/courses/CourseThumbnail";
+import { CourseThumbnail } from "@/components/market/courses/CourseThumbnail";
 import { Button } from "@/components/ui/button";
 import { fadeInRight, EASE_OUT_EXPO } from "@/lib/motion";
 
@@ -67,11 +67,10 @@ export const StickyPurchaseCard: React.FC<StickyPurchaseCardProps> = ({ course }
         <div className="p-6 relative">
           <div className="flex items-end gap-3 mb-6">
             <span
-              className={`text-3xl font-black tracking-tight ${
-                course.isFree
+              className={`text-3xl font-black tracking-tight ${course.isFree
                   ? "text-emerald-500"
                   : "bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent"
-              }`}
+                }`}
             >
               {formatPrice(course.price, course.isFree)}
             </span>

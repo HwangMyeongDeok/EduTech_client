@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Sparkles, Zap } from "lucide-react";
 import { staggerContainerFast, fadeInLeft, VIEWPORT_ONCE } from "@/lib/motion";
-import { Reveal } from "@/components/instructors/Reveal";
+import { Reveal } from "@/components/market/instructors/Reveal";
 
 export function AiSolutionSection() {
   return (

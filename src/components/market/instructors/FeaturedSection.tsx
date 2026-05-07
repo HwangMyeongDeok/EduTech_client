@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { staggerContainer, VIEWPORT_ONCE } from "@/lib/motion";
 import { featuredInstructors } from "@/data/instructor.data";
-import { InstructorCard } from "@/components/instructors/InstructorCard";
-import { Reveal } from "@/components/instructors/Reveal";
+import { InstructorCard } from "@/components/market/instructors/InstructorCard";
+import { Reveal } from "@/components/market/instructors/Reveal";
 
 export function FeaturedSection() {
   return (

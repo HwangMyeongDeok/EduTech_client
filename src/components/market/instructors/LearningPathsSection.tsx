@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, ArrowRight } from "lucide-react";
 import { staggerContainer, fadeInUp, EASE_OUT_EXPO, VIEWPORT_ONCE } from "@/lib/motion";
 import { learningPaths } from "@/data/instructor.data";
-import { Reveal } from "@/components/instructors/Reveal";
+import { Reveal } from "@/components/market/instructors/Reveal";
 
 export function LearningPathsSection() {
   return (
@@ -38,9 +38,8 @@ export function LearningPathsSection() {
               key={lp.id} variants={fadeInUp}
               whileHover={lp.highlight ? { y: -6 } : { y: -4, boxShadow: "0 20px 40px rgba(11,86,213,0.10)" }}
               transition={{ duration: 0.22, ease: EASE_OUT_EXPO }}
-              className={`rounded-2xl p-7 h-full flex flex-col cursor-pointer border ${
-                lp.highlight ? "bg-blue-600 text-white shadow-xl shadow-blue-500/25 border-blue-500" : "bg-white border-gray-100 shadow-sm"
-              }`}
+              className={`rounded-2xl p-7 h-full flex flex-col cursor-pointer border ${lp.highlight ? "bg-blue-600 text-white shadow-xl shadow-blue-500/25 border-blue-500" : "bg-white border-gray-100 shadow-sm"
+                }`}
             >
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-5 ${lp.highlight ? "bg-white/20 backdrop-blur-sm" : "bg-gray-100"}`}>
                 <MapPin className={`w-5 h-5 ${lp.highlight ? "text-white" : "text-gray-500"}`} />

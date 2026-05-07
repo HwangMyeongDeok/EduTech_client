@@ -15,10 +15,10 @@ import { COURSES, formatPrice } from "@/data/courses.data";
 import { Button } from "@/components/ui/button";
 import { fadeInUp, staggerContainer, VIEWPORT_ONCE, EASE_OUT_EXPO } from "@/lib/motion";
 
-import { StarRating } from "@/components/course-detail/StarRating";
-import { SectionHeader } from "@/components/course-detail/SectionHeader";
-import { ChapterAccordion } from "@/components/course-detail/ChapterAccordion";
-import { StickyPurchaseCard } from "@/components/course-detail/StickyPurchaseCard";
+import { StarRating } from "@/components/market/course-detail/StarRating";
+import { SectionHeader } from "@/components/market/course-detail/SectionHeader";
+import { ChapterAccordion } from "@/components/market/course-detail/ChapterAccordion";
+import { StickyPurchaseCard } from "@/components/market/course-detail/StickyPurchaseCard";
 
 const CourseDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -149,7 +149,7 @@ const CourseDetailPage: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-12 lg:py-16">
         <div className="flex flex-col lg:flex-row gap-10 xl:gap-14">
           <div className="flex-1 min-w-0 space-y-12">
-            
+
             {/* Chi tiết khóa học */}
             <motion.section
               variants={staggerContainer}
@@ -278,9 +278,8 @@ const CourseDetailPage: React.FC = () => {
         <div className="bg-card/95 backdrop-blur-xl border-t border-border px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <div>
             <p
-              className={`font-black text-xl leading-none ${
-                course.isFree ? "text-emerald-500" : "text-foreground"
-              }`}
+              className={`font-black text-xl leading-none ${course.isFree ? "text-emerald-500" : "text-foreground"
+                }`}
             >
               {formatPrice(course.price, course.isFree)}
             </p>
