@@ -1,10 +1,18 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import MarketLayout from "../layout/market/MarketLayout";
 import Home from "../pages/market/HomePage";
 import CoursesPage from "@/pages/market/CoursesPage";
 import CourseDetailPage from "@/pages/market/CourseDetailPage";
 import MacoContent from "@/pages/market/InstructorPage";
 import { ProtectedRoute } from "./ProtectedRoute";
+import StudentLayout from "@/layout/student/StudentLayout";
+import StudentDashboard from "@/pages/student/StudentDashboard";
+import MyCourses from "@/pages/student/MyCourses";
+import Achievements from "@/pages/student/Achievements";
+import { Settings } from "lucide-react";
+import CoursePlayer from "@/pages/student/CoursePlayer";
+import Explore from "@/pages/student/Explore";
+import CourseDetail from "@/pages/student/CourseDetail";
 
 export default function AppRoutes() {
   return (
@@ -19,11 +27,18 @@ export default function AppRoutes() {
         </Route>
 
         {/* 2. STUDENT ROUTES */}
-        <Route element={<ProtectedRoute allowedRoles={["student"]} />}>
-          <Route path="/student" element={<StudentLayout />}>
-            <Route path="dashboard" element={<StudentDashboard />} />
-          </Route>
+        {/* <Route element={<ProtectedRoute allowedRoles={["student"]} />}> */}
+        <Route path="/student" element={<StudentLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<StudentDashboard />} />
+          <Route path="my-courses" element={<MyCourses />} />
+          <Route path="achievements" element={<Achievements />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="course/:courseId" element={<CoursePlayer />} />
+          <Route path="explore" element={<Explore />} />
+          <Route path="course-detail/:id" element={<CourseDetail />} />
         </Route>
+        {/* </Route> */}
 
         {/* 4. ADMIN ROUTES */}
         {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
