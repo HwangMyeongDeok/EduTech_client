@@ -16,8 +16,7 @@ export default function CourseDetail() {
   const { id } = useParams(); // Lấy ID khóa học từ URL
 
   return (
-    <div className="pb-10 max-w-6xl mx-auto space-y-8">
-      
+      <div className="pb-10 w-full space-y-8">      
       {/* Nút Back (UX: Tiện lợi không cần với tay lên trình duyệt) */}
       <Button 
         variant="ghost" 
@@ -104,34 +103,49 @@ export default function CourseDetail() {
         </div>
 
         {/* CỘT PHẢI: STICKY CHECKOUT CARD */}
-        <div className="w-full lg:w-80 flex-shrink-0">
-          <div className="sticky top-24">
-            <Card className="rounded-3xl border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden">
-              <div className="w-full aspect-video bg-teal-500 relative flex items-center justify-center">
-                <span className="text-6xl drop-shadow-xl">⚛️</span>
-                <div className="absolute inset-0 bg-black/10 flex items-center justify-center cursor-pointer hover:bg-black/20 transition-colors">
-                  <div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center">
-                    <PlayCircle className="w-6 h-6 text-teal-600 fill-current" />
-                  </div>
-                </div>
-              </div>
-              <CardContent className="p-6">
-                <div className="text-3xl font-black text-[#0B56D5] mb-6">Miễn phí</div>
-                <Button 
-                  onClick={() => navigate('/student/course/react-123')}
-                  className="w-full h-12 text-base font-bold bg-[#0B56D5] hover:bg-blue-700 rounded-xl mb-4"
-                >
-                  Bắt đầu học ngay
-                </Button>
-                <div className="space-y-3 text-sm text-slate-600 font-medium pb-4 border-b border-slate-100">
-                  <div className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-emerald-500"/> Truy cập trọn đời</div>
-                  <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-emerald-500"/> Cập nhật nội dung liên tục</div>
-                </div>
-              </CardContent>
-            </Card>
+    <div className="w-full lg:w-[400px] flex-shrink-0">
+  <div className="sticky top-24">
+    <Card className="rounded-3xl border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden">
+      
+      {/* Phần Thumbnail/Video */}
+      <div className="w-full aspect-video bg-teal-500 relative flex items-center justify-center">
+        <span className="text-7xl drop-shadow-xl">⚛️</span> {/* Tăng nhẹ icon cho hợp với khung to */}
+        <div className="absolute inset-0 bg-black/10 flex items-center justify-center cursor-pointer hover:bg-black/20 transition-colors">
+          <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg">
+            <PlayCircle className="w-7 h-7 text-teal-600 fill-current" />
           </div>
         </div>
+      </div>
 
+      <CardContent className="p-8"> {/* Tăng padding từ p-6 lên p-8 cho thoáng */}
+        <div className="text-3xl font-black text-[#0B56D5] mb-6">Miễn phí</div>
+        
+        <Button 
+          onClick={() => navigate('/student/course/react-123')}
+          className="w-full h-14 text-lg font-bold bg-[#0B56D5] hover:bg-blue-700 rounded-2xl mb-6 shadow-lg shadow-blue-200 transition-all active:scale-[0.98]"
+        >
+          Bắt đầu học ngay
+        </Button>
+
+        <div className="space-y-4 text-sm text-slate-600 font-medium pb-2">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-emerald-500"/>
+            </div>
+            <span>Truy cập trọn đời</span>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+              <Clock className="w-5 h-5 text-emerald-500"/>
+            </div>
+            <span>Cập nhật nội dung liên tục</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</div>
       </div>
     </div>
   );
