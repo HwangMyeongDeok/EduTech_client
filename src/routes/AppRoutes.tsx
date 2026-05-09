@@ -6,13 +6,18 @@ import CourseDetailPage from "@/pages/market/CourseDetailPage";
 import MacoContent from "@/pages/market/InstructorPage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import StudentLayout from "@/layout/student/StudentLayout";
-import StudentDashboard from "@/pages/student/StudentDashboard";
+import StudentDashboard from "@/pages/student/Dashboard";
 import MyCourses from "@/pages/student/MyCourses";
 import Achievements from "@/pages/student/Achievements";
 import CoursePlayer from "@/pages/student/CoursePlayer";
 import Explore from "@/pages/student/Explore";
 import CourseDetail from "@/pages/student/CourseDetail";
 import Settings from "@/pages/student/Settings";
+import InstructorLayout from "@/layout/instructor/InstructorLayout";
+import InstructorDashboard from "@/pages/instructor/Dashoard";
+import InstructorCourses from "@/pages/instructor/InstructorCourses";
+import InstructorCourseDetail from "@/pages/instructor/InstructorCourseDetail";
+import InstructorLessonDetail from "@/pages/instructor/InstructorLessonDetail";
 
 export default function AppRoutes() {
   return (
@@ -48,14 +53,15 @@ export default function AppRoutes() {
         </Route> */}
 
         {/* 3. INSTRUCTOR ROUTES */}
-        {/* <Route element={<ProtectedRoute allowedRoles={["instructor"]} />}>
-          <Route path="/instructor" element={<StudentLayout />}> */}
-        {/* Đổi thành InstructLayout sau */}
-        {/* <Route path="dashboard" element={<div>Instructor Dashboard</div>} />
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="users" element={<div>User Management</div>} />
-          </Route>
-        </Route> */}
+        {/* <Route element={<ProtectedRoute allowedRoles={["instructor"]} />}> */}
+        <Route path="/instructor" element={<InstructorLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<InstructorDashboard />} />
+          <Route path="courses" element={<InstructorCourses />} />
+          <Route path="courses/:id" element={<InstructorCourseDetail />} />
+          <Route path="courses/:id/lessons/:lessonId" element={<InstructorLessonDetail />} />
+        </Route>
+        {/* </Route> */}
 
         {/* Trang báo lỗi 403 / 404 */}
         <Route path="/unauthorized" element={<div>Bạn không có quyền truy cập trang này!</div>} />
