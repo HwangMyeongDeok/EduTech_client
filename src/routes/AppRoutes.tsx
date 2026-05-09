@@ -9,10 +9,10 @@ import StudentLayout from "@/layout/student/StudentLayout";
 import StudentDashboard from "@/pages/student/StudentDashboard";
 import MyCourses from "@/pages/student/MyCourses";
 import Achievements from "@/pages/student/Achievements";
-import { Settings } from "lucide-react";
 import CoursePlayer from "@/pages/student/CoursePlayer";
 import Explore from "@/pages/student/Explore";
 import CourseDetail from "@/pages/student/CourseDetail";
+import Settings from "@/pages/student/Settings";
 
 export default function AppRoutes() {
   return (

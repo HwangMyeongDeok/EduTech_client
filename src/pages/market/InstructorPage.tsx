@@ -1,4 +1,4 @@
-"use client";
+"";
 
 import { HeroSection } from "@/components/market/instructors/HeroSection";
 import { FeaturedSection } from "@/components/market/instructors/FeaturedSection";

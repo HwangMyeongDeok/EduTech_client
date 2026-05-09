@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { LayoutDashboard, BookOpen, Trophy, Settings, Sparkles, LogOut } from "lucide-react";
+// Import các icon mới phù hợp với Account Menu
+import { User, Bookmark, CreditCard, HelpCircle, LogOut, Sparkles } from "lucide-react"; 
 
 interface UserDropdownProps {
   user: any;
@@ -7,11 +8,12 @@ interface UserDropdownProps {
 }
 
 export function UserDropdown({ user, onLogout }: UserDropdownProps) {
+  // Thay đổi menuItems tập trung vào Quản lý tài khoản
   const menuItems = [
-    { icon: <LayoutDashboard className="w-4 h-4" />, label: "Tổng quan", color: "text-blue-500", bg: "bg-blue-50" },
-    { icon: <BookOpen className="w-4 h-4" />, label: "Khóa học của tôi", color: "text-emerald-500", bg: "bg-emerald-50" },
-    { icon: <Trophy className="w-4 h-4" />, label: "Thành tích", color: "text-amber-500", bg: "bg-amber-50" },
-    { icon: <Settings className="w-4 h-4" />, label: "Cài đặt", color: "text-slate-500", bg: "bg-slate-50" },
+    { icon: <User className="w-4 h-4" />, label: "Hồ sơ cá nhân", color: "text-blue-500", bg: "bg-blue-50", link: "/profile" },
+    { icon: <Bookmark className="w-4 h-4" />, label: "Khóa học đã lưu", color: "text-rose-500", bg: "bg-rose-50", link: "/wishlist" },
+    { icon: <CreditCard className="w-4 h-4" />, label: "Lịch sử giao dịch", color: "text-emerald-500", bg: "bg-emerald-50", link: "/billing" },
+    { icon: <HelpCircle className="w-4 h-4" />, label: "Trung tâm hỗ trợ", color: "text-amber-500", bg: "bg-amber-50", link: "/support" },
   ];
 
   return (
@@ -33,6 +35,7 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
+            // Nếu dùng React Router, ông có thể onClick={() => navigate(item.link)} ở đây
             className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-all group"
           >
             <div className="flex items-center gap-3">

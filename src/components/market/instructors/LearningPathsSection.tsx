@@ -1,4 +1,4 @@
-"use client";
+"";
 
 import { motion } from "framer-motion";
 import { MapPin, Clock, ArrowRight } from "lucide-react";

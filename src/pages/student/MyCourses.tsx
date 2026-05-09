@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PlayCircle, CheckCircle2, Clock, Award, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Mock Data
 const MY_COURSES = [
@@ -10,6 +11,7 @@ const MY_COURSES = [
 ];
 
 export default function MyCourses() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
 
   const filteredCourses = MY_COURSES.filter(course => {
@@ -64,7 +66,9 @@ export default function MyCourses() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              className="bg-white rounded-3xl p-4 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl transition-shadow flex flex-col group"
+              // THÊM onClick Ở ĐÂY ĐỂ VÀO TRANG CHI TIẾT + THÊM cursor-pointer
+              onClick={() => navigate(`/student/course-detail/${course.id}`)} 
+              className="bg-white rounded-3xl p-4 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-xl transition-shadow flex flex-col group cursor-pointer"
             >
               <div className={`w-full h-36 ${course.bg} rounded-2xl flex items-center justify-center text-5xl mb-5 relative overflow-hidden`}>
                 <span className="group-hover:scale-110 transition-transform duration-500 drop-shadow-lg">{course.icon}</span>
@@ -76,7 +80,7 @@ export default function MyCourses() {
               </div>
               
               <div className="flex-1 flex flex-col">
-                <h3 className="text-lg font-bold text-slate-800 leading-snug mb-1 line-clamp-2">
+                <h3 className="text-lg font-bold text-slate-800 leading-snug mb-1 line-clamp-2 group-hover:text-[#0B56D5] transition-colors">
                   {course.title}
                 </h3>
                 <p className="text-sm text-slate-500 font-medium mb-4">{course.instructor}</p>
@@ -103,11 +107,25 @@ export default function MyCourses() {
                       <Clock className="w-3.5 h-3.5" /> Học lần cuối: {course.lastViewed}
                     </div>
                     {course.status === "completed" ? (
-                      <button className="px-4 py-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-xl text-sm font-bold transition-colors flex items-center gap-2">
+                      <button 
+                        // Thêm e.stopPropagation() cho nút Nhận chứng chỉ
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          console.log("Mở modal chứng chỉ");
+                        }}
+                        className="px-4 py-2 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-xl text-sm font-bold transition-colors flex items-center gap-2"
+                      >
                         <Award className="w-4 h-4" /> Chứng nhận
                       </button>
                     ) : (
-                      <button className="px-4 py-2 bg-[#0B56D5] text-white hover:bg-blue-700 rounded-xl text-sm font-bold transition-colors shadow-md shadow-blue-500/20 flex items-center gap-2">
+                      <button 
+                        // THÊM e.stopPropagation() Ở ĐÂY ĐỂ CHẶN SỰ KIỆN CLICK CỦA THẺ CHA
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/student/course/${course.id}`);
+                        }} 
+                        className="px-4 py-2 bg-[#0B56D5] text-white hover:bg-blue-700 rounded-xl text-sm font-bold transition-colors shadow-md shadow-blue-500/20 flex items-center gap-2"
+                      >
                         <PlayCircle className="w-4 h-4" /> Tiếp tục
                       </button>
                     )}

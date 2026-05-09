@@ -1,4 +1,4 @@
-"use client";
+"";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -57,7 +57,7 @@ const MODULES = [
 // Hook kéo thả thuần (mousedown / mousemove / mouseup)
 // Trả về ref gắn vào bong bóng + style position
 // ----------------------------------------------------------------
-function useDraggable(containerRef: React.RefObject<HTMLDivElement>) {
+function useDraggable(containerRef: React.RefObject<HTMLDivElement | null>) {
   const bubbleRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ right: 40, bottom: 100 });
   const dragging = useRef(false);
@@ -65,7 +65,7 @@ function useDraggable(containerRef: React.RefObject<HTMLDivElement>) {
   const offset = useRef({ x: 0, y: 0 });
 
   const onMouseDown = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
       dragging.current = true;
       hasMoved.current = false;
@@ -127,7 +127,6 @@ function useDraggable(containerRef: React.RefObject<HTMLDivElement>) {
 export default function CoursePlayer() {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
-
   // States
   const [expandedModules, setExpandedModules] = useState<number[]>([1, 2, 3]);
   const [currentLesson, setCurrentLesson] = useState(MODULES[0].lessons[2]);
@@ -144,7 +143,6 @@ export default function CoursePlayer() {
 
   // Hook kéo thả
   const { bubbleRef, pos, onMouseDown, hasMoved } = useDraggable(containerRef);
-
   const toggleModule = (id: number) => {
     setExpandedModules((prev) =>
       prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]
@@ -251,21 +249,19 @@ export default function CoursePlayer() {
             <div className="border-b border-slate-200 flex gap-8 mb-6">
               <button
                 onClick={() => setActiveTab("content")}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${
-                  activeTab === "content"
-                    ? "border-[#0B56D5] text-[#0B56D5]"
-                    : "border-transparent text-slate-500 hover:text-slate-800"
-                }`}
+                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${activeTab === "content"
+                  ? "border-[#0B56D5] text-[#0B56D5]"
+                  : "border-transparent text-slate-500 hover:text-slate-800"
+                  }`}
               >
                 Nội dung văn bản
               </button>
               <button
                 onClick={() => setActiveTab("attachments")}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${
-                  activeTab === "attachments"
-                    ? "border-[#0B56D5] text-[#0B56D5]"
-                    : "border-transparent text-slate-500 hover:text-slate-800"
-                }`}
+                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${activeTab === "attachments"
+                  ? "border-[#0B56D5] text-[#0B56D5]"
+                  : "border-transparent text-slate-500 hover:text-slate-800"
+                  }`}
               >
                 Tài liệu đính kèm
               </button>
@@ -373,9 +369,8 @@ export default function CoursePlayer() {
                     </p>
                   </div>
                   <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${
-                      expandedModules.includes(module.id) ? "rotate-180" : ""
-                    }`}
+                    className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${expandedModules.includes(module.id) ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -396,31 +391,27 @@ export default function CoursePlayer() {
                             onClick={() =>
                               !isLocked && setCurrentLesson(lesson)
                             }
-                            className={`flex items-start gap-3 px-5 py-3 transition-all border-b border-slate-50 cursor-pointer ${
-                              isActive
-                                ? "bg-[#0B56D510] border-l-4 border-l-[#0B56D5]"
-                                : "hover:bg-slate-50"
-                            } ${
-                              isLocked
+                            className={`flex items-start gap-3 px-5 py-3 transition-all border-b border-slate-50 cursor-pointer ${isActive
+                              ? "bg-[#0B56D510] border-l-4 border-l-[#0B56D5]"
+                              : "hover:bg-slate-50"
+                              } ${isLocked
                                 ? "opacity-50 grayscale-[0.3] cursor-not-allowed"
                                 : ""
-                            }`}
+                              }`}
                           >
                             <div className="flex-1">
                               <p
-                                className={`text-[13px] font-medium leading-tight ${
-                                  isActive
-                                    ? "text-[#0B56D5]"
-                                    : "text-slate-800"
-                                }`}
+                                className={`text-[13px] font-medium leading-tight ${isActive
+                                  ? "text-[#0B56D5]"
+                                  : "text-slate-800"
+                                  }`}
                               >
                                 {lesson.title}
                               </p>
                               <div className="flex items-center gap-2 mt-2 text-[11px] text-slate-400">
                                 <PlayCircle
-                                  className={`w-3.5 h-3.5 ${
-                                    isActive ? "text-[#0B56D5]" : ""
-                                  }`}
+                                  className={`w-3.5 h-3.5 ${isActive ? "text-[#0B56D5]" : ""
+                                    }`}
                                 />
                                 <span>{lesson.duration}</span>
                               </div>
@@ -432,11 +423,10 @@ export default function CoursePlayer() {
                                 <Lock className="w-3.5 h-3.5 text-slate-300" />
                               ) : (
                                 <div
-                                  className={`w-3.5 h-3.5 rounded-full border-2 ${
-                                    isActive
-                                      ? "border-[#0B56D5]"
-                                      : "border-slate-300"
-                                  }`}
+                                  className={`w-3.5 h-3.5 rounded-full border-2 ${isActive
+                                    ? "border-[#0B56D5]"
+                                    : "border-slate-300"
+                                    }`}
                                 />
                               )}
                             </div>
