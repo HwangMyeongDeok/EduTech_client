@@ -21,6 +21,14 @@ import InstructorLessonDetail from "@/pages/instructor/InstructorLessonDetail";
 import InstructorStudents from "@/pages/instructor/InstructorStudents";
 import InstructorRevenue from "@/pages/instructor/InstructorRevenue";
 import InstructorSettings from "@/pages/instructor/InstructorSettings";
+import AdminLayout from "@/layout/admin/AdminLayout";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import UserManagement from "@/pages/admin/UserManagement";
+import CourseManagement from "@/pages/admin/CourseManagement";
+import FinancialManagement from "@/pages/admin/FinancialManagement";
+import SystemMonitoring from "@/pages/admin/SystemMonitoring";
+import SecurityRoles from "@/pages/admin/SecurityRoles";
+import SystemSettings from "@/pages/admin/SystemSettings";
 
 export default function AppRoutes() {
   return (
@@ -50,9 +58,16 @@ export default function AppRoutes() {
 
         {/* 4. ADMIN ROUTES */}
         {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}> */}
-          {/* <Route path="/admin" element={<AdminLayout />}>
-            <Route path="my-courses" element={<div>My Courses Page</div>} />
-          </Route> */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="courses" element={<CourseManagement />} />
+          <Route path="finance" element={<FinancialManagement />} />
+          <Route path="system-monitoring" element={<SystemMonitoring />} />
+          <Route path="security-roles" element={<SecurityRoles />} />
+          <Route path="system-settings" element={<SystemSettings />} />
+        </Route>
         {/* </Route> */}
 
         {/* 3. INSTRUCTOR ROUTES */}
