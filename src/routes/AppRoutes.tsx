@@ -18,6 +18,9 @@ import InstructorDashboard from "@/pages/instructor/Dashoard";
 import InstructorCourses from "@/pages/instructor/InstructorCourses";
 import InstructorCourseDetail from "@/pages/instructor/InstructorCourseDetail";
 import InstructorLessonDetail from "@/pages/instructor/InstructorLessonDetail";
+import InstructorStudents from "@/pages/instructor/InstructorStudents";
+import InstructorRevenue from "@/pages/instructor/InstructorRevenue";
+import InstructorSettings from "@/pages/instructor/InstructorSettings";
 
 export default function AppRoutes() {
   return (
@@ -46,11 +49,11 @@ export default function AppRoutes() {
         {/* </Route> */}
 
         {/* 4. ADMIN ROUTES */}
-        {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-          <Route path="/admin" element={<AdminLayout />}>
+        {/* <Route element={<ProtectedRoute allowedRoles={["admin"]} />}> */}
+          {/* <Route path="/admin" element={<AdminLayout />}>
             <Route path="my-courses" element={<div>My Courses Page</div>} />
-          </Route>
-        </Route> */}
+          </Route> */}
+        {/* </Route> */}
 
         {/* 3. INSTRUCTOR ROUTES */}
         {/* <Route element={<ProtectedRoute allowedRoles={["instructor"]} />}> */}
@@ -60,6 +63,9 @@ export default function AppRoutes() {
           <Route path="courses" element={<InstructorCourses />} />
           <Route path="courses/:id" element={<InstructorCourseDetail />} />
           <Route path="courses/:id/lessons/:lessonId" element={<InstructorLessonDetail />} />
+          <Route path="students" element={<InstructorStudents />} />
+          <Route path="revenue" element={<InstructorRevenue />} />
+          <Route path="settings" element={<InstructorSettings />} />
         </Route>
         {/* </Route> */}
 

@@ -22,7 +22,7 @@ import {
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
     DropdownMenuRadioGroup, DropdownMenuRadioItem
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // --- MOCK DATA ---
 const INITIAL_COURSES = [
@@ -53,6 +53,7 @@ const getLevelBadgeStyles = (level: string) => {
 };
 
 export default function InstructorCourses() {
+    const navigate = useNavigate();
     const [courses, setCourses] = useState(INITIAL_COURSES);
 
     // States Filter & Search & Sort
@@ -259,7 +260,9 @@ export default function InstructorCourses() {
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
-                                    className="p-4 md:p-5 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 hover:bg-slate-50 transition-colors group"
+                                    // ĐÃ THÊM: Chuyển trang khi click vào dòng & cursor-pointer
+                                    onClick={() => navigate(`/instructor/courses/${course.id}`)}
+                                    className="p-4 md:p-5 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 hover:bg-slate-50 transition-colors group cursor-pointer"
                                 >
                                     {/* 1. Ảnh + Info */}
                                     <div className="flex items-start md:items-center gap-5 w-full xl:w-5/12">
@@ -278,12 +281,10 @@ export default function InstructorCourses() {
                                             </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            {/* THÊM LINK VÀO TÊN KHÓA HỌC */}
-                                            <Link to={`/instructor/courses/${course.id}`}>
-                                                <h3 className="font-bold text-slate-800 text-base md:text-lg truncate group-hover:text-[#0B56D5] transition-colors cursor-pointer leading-tight">
-                                                    {course.name}
-                                                </h3>
-                                            </Link>
+                                            {/* Chỗ này bỏ thẻ <Link> đi cho đỡ thừa vì cả dòng đã click được rồi */}
+                                            <h3 className="font-bold text-slate-800 text-base md:text-lg truncate group-hover:text-[#0B56D5] transition-colors leading-tight">
+                                                {course.name}
+                                            </h3>
                                             <div className="flex flex-wrap items-center gap-2 mt-2">
                                                 <Badge variant="outline" className="bg-white text-slate-600 border-slate-200 px-2 py-0.5 text-xs font-semibold">
                                                     {course.category}
@@ -318,15 +319,17 @@ export default function InstructorCourses() {
                                     </div>
 
                                     {/* 3. Actions */}
-                                    <div className="flex items-center gap-2 w-full xl:w-auto xl:justify-end pt-4 xl:pt-0 border-t xl:border-none border-slate-100">
-                                        {/* THÊM LINK VÀO NÚT XEM */}
+                                    {/* ĐÃ THÊM: onClick chặn nổi bọt (stopPropagation) để bấm nút không bị nhảy vào chi tiết */}
+                                    <div
+                                        className="flex items-center gap-2 w-full xl:w-auto xl:justify-end pt-4 xl:pt-0 border-t xl:border-none border-slate-100 relative z-10"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         <Button asChild variant="outline" className="h-9 px-3 rounded-lg border-slate-200 text-slate-600 hover:text-[#0B56D5] hover:border-[#0B56D5] hover:bg-blue-50 font-bold cursor-pointer">
                                             <Link to={`/instructor/courses/${course.id}`}>
                                                 <Eye className="w-4 h-4 mr-1.5" /> Xem
                                             </Link>
                                         </Button>
 
-                                        {/* THÊM LINK VÀO NÚT SỬA ĐỂ SAU NÀY LÀM COURSE BUILDER */}
                                         <Button asChild variant="outline" className="h-9 px-3 rounded-lg border-slate-200 text-slate-600 hover:text-amber-600 hover:border-amber-600 hover:bg-amber-50 font-bold cursor-pointer">
                                             <Link to={`/instructor/courses/${course.id}/edit`}>
                                                 <Edit2 className="w-4 h-4 mr-1.5" /> Sửa
