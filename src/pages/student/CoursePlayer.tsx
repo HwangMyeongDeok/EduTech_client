@@ -1,6 +1,4 @@
-"";
-
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   PlayCircle,
@@ -26,113 +24,103 @@ const MODULES = [
     id: 1,
     title: "1. Bắt đầu",
     lessons: [
-      { id: 101, title: "1.1 Bạn sẽ làm được gì sau khóa học?", duration: "03:15", status: "completed" },
-      { id: 102, title: "1.2 Tìm hiểu về HTML, CSS", duration: "02:29", status: "completed" },
-      { id: 103, title: "1.3 Làm quen với Dev tools", duration: "03:55", status: "playing" },
+      {
+        id: 101,
+        title: "1.1 Bạn sẽ làm được gì sau khóa học?",
+        duration: "03:15",
+        status: "completed",
+      },
+      {
+        id: 102,
+        title: "1.2 Tìm hiểu về HTML, CSS",
+        duration: "02:29",
+        status: "completed",
+      },
+      {
+        id: 103,
+        title: "1.3 Làm quen với Dev tools",
+        duration: "03:55",
+        status: "playing",
+      },
     ],
   },
   {
     id: 2,
     title: "2. Làm quen với HTML",
     lessons: [
-      { id: 201, title: "2.1 Cấu trúc file HTML", duration: "18:45", status: "locked" },
-      { id: 202, title: "2.2 Các thẻ định dạng văn bản", duration: "25:10", status: "locked" },
-      { id: 203, title: "2.3 Thẻ Heading và Paragraph", duration: "12:30", status: "locked" },
-      { id: 204, title: "2.4 Thẻ Links và Images", duration: "20:00", status: "locked" },
+      {
+        id: 201,
+        title: "2.1 Cấu trúc file HTML",
+        duration: "18:45",
+        status: "locked",
+      },
+      {
+        id: 202,
+        title: "2.2 Các thẻ định dạng văn bản",
+        duration: "25:10",
+        status: "locked",
+      },
+      {
+        id: 203,
+        title: "2.3 Thẻ Heading và Paragraph",
+        duration: "12:30",
+        status: "locked",
+      },
+      {
+        id: 204,
+        title: "2.4 Thẻ Links và Images",
+        duration: "20:00",
+        status: "locked",
+      },
     ],
   },
   {
     id: 3,
     title: "3. CSS Cơ bản",
     lessons: [
-      { id: 301, title: "3.1 Cách nhúng CSS", duration: "10:00", status: "locked" },
-      { id: 302, title: "3.2 Selectors cơ bản", duration: "18:20", status: "locked" },
-      { id: 303, title: "3.3 Màu sắc và Background", duration: "22:15", status: "locked" },
-      { id: 304, title: "3.4 Box Model (Padding, Margin, Border)", duration: "30:00", status: "locked" },
+      {
+        id: 301,
+        title: "3.1 Cách nhúng CSS",
+        duration: "10:00",
+        status: "locked",
+      },
+      {
+        id: 302,
+        title: "3.2 Selectors cơ bản",
+        duration: "18:20",
+        status: "locked",
+      },
+      {
+        id: 303,
+        title: "3.3 Màu sắc và Background",
+        duration: "22:15",
+        status: "locked",
+      },
+      {
+        id: 304,
+        title: "3.4 Box Model (Padding, Margin, Border)",
+        duration: "30:00",
+        status: "locked",
+      },
     ],
   },
 ];
-
-// ----------------------------------------------------------------
-// Hook kéo thả thuần (mousedown / mousemove / mouseup)
-// Trả về ref gắn vào bong bóng + style position
-// ----------------------------------------------------------------
-function useDraggable(containerRef: React.RefObject<HTMLDivElement | null>) {
-  const bubbleRef = useRef<HTMLDivElement>(null);
-  const [pos, setPos] = useState({ right: 40, bottom: 100 });
-  const dragging = useRef(false);
-  const hasMoved = useRef(false);
-  const offset = useRef({ x: 0, y: 0 });
-
-  const onMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      dragging.current = true;
-      hasMoved.current = false;
-
-      const bubble = bubbleRef.current!;
-      const bRect = bubble.getBoundingClientRect();
-      offset.current = {
-        x: e.clientX - bRect.left,
-        y: e.clientY - bRect.top,
-      };
-    },
-    []
-  );
-
-  useEffect(() => {
-    const onMouseMove = (e: MouseEvent) => {
-      if (!dragging.current) return;
-      hasMoved.current = true;
-
-      const container = containerRef.current;
-      const bubble = bubbleRef.current;
-      if (!container || !bubble) return;
-
-      const cRect = container.getBoundingClientRect();
-      const bW = bubble.offsetWidth;
-      const bH = bubble.offsetHeight;
-
-      let newLeft = e.clientX - cRect.left - offset.current.x;
-      let newTop = e.clientY - cRect.top - offset.current.y;
-
-      newLeft = Math.max(0, Math.min(newLeft, cRect.width - bW));
-      newTop = Math.max(0, Math.min(newTop, cRect.height - bH));
-
-      // Lưu dưới dạng left/top tuyệt đối khi đang kéo
-      bubble.style.left = newLeft + "px";
-      bubble.style.top = newTop + "px";
-      bubble.style.right = "auto";
-      bubble.style.bottom = "auto";
-    };
-
-    const onMouseUp = () => {
-      dragging.current = false;
-    };
-
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-    };
-  }, [containerRef]);
-
-  return { bubbleRef, pos, onMouseDown, hasMoved };
-}
 
 // ----------------------------------------------------------------
 // COMPONENT CHÍNH
 // ----------------------------------------------------------------
 export default function CoursePlayer() {
   const navigate = useNavigate();
-  const containerRef = useRef<HTMLDivElement>(null);
+
   // States
   const [expandedModules, setExpandedModules] = useState<number[]>([1, 2, 3]);
   const [currentLesson, setCurrentLesson] = useState(MODULES[0].lessons[2]);
   const [isNoteOpen, setIsNoteOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"content" | "attachments">("content");
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"content" | "attachments">(
+    "content",
+  );
+
+  // Chat States
   const [chatInput, setChatInput] = useState("");
   const [chatMessages, setChatMessages] = useState([
     {
@@ -141,19 +129,10 @@ export default function CoursePlayer() {
     },
   ]);
 
-  // Hook kéo thả
-  const { bubbleRef, pos, onMouseDown, hasMoved } = useDraggable(containerRef);
   const toggleModule = (id: number) => {
     setExpandedModules((prev) =>
-      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id],
     );
-  };
-
-  const handleBubbleClick = () => {
-    // Chỉ mở chat nếu không phải đang kéo
-    if (!hasMoved.current) {
-      setIsChatOpen(true);
-    }
   };
 
   const handleSendChat = () => {
@@ -174,18 +153,15 @@ export default function CoursePlayer() {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-full bg-white overflow-hidden font-sans border border-slate-200"
-    >
+    <div className="relative w-full h-screen flex flex-col bg-white overflow-hidden font-sans border border-slate-200">
       {/* ===================== HEADER ===================== */}
-      <header className="absolute top-0 left-0 right-0 h-[50px] bg-[#29303b] flex items-center justify-between px-4 text-white z-30 border-b border-slate-800 shadow-sm">
+      <header className="h-[50px] shrink-0 bg-[#29303b] flex items-center justify-between px-4 text-white z-30 shadow-sm relative">
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate(-1)}
-            className="hover:bg-slate-700 p-1 rounded-full transition-colors"
+            className="hover:bg-slate-700 p-1.5 rounded-full transition-colors"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-[#0B56D5] rounded-lg flex items-center justify-center font-extrabold text-sm text-white shadow-sm">
@@ -200,33 +176,131 @@ export default function CoursePlayer() {
         <div className="flex items-center gap-6">
           <button
             onClick={() => setIsNoteOpen(true)}
-            className="flex items-center gap-1.5 text-xs font-semibold hover:text-[#0B56D5] transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold hover:text-blue-300 transition-colors"
           >
             <FileText className="w-4 h-4" />
             <span className="hidden md:inline">Ghi chú</span>
           </button>
-          <button className="flex items-center gap-1.5 text-xs font-semibold hover:text-[#0B56D5] transition-colors">
+          <button className="flex items-center gap-1.5 text-xs font-semibold hover:text-blue-300 transition-colors">
             <HelpCircle className="w-4 h-4" />
             <span className="hidden md:inline">Hướng dẫn</span>
           </button>
         </div>
       </header>
 
-      {/* ===================== BODY ===================== */}
-      <div className="flex w-full h-full pt-[50px] pb-[60px] overflow-hidden">
+      {/* ===================== BODY (3 CỘT) ===================== */}
+      <div className="flex-1 flex overflow-hidden w-full relative">
+        {/* CỘT 1 (TRÁI): PLAYLIST NỘI DUNG KHÓA HỌC */}
+        <aside className="w-[300px] xl:w-[350px] border-r border-slate-200 hidden lg:flex flex-col bg-white h-full shrink-0 z-10">
+          <div className="p-4 border-b border-slate-100 shrink-0 bg-white shadow-sm z-10">
+            <h3 className="font-bold text-slate-800 flex items-center gap-2 uppercase text-[11px] tracking-wider">
+              <List className="w-4 h-4 text-[#0B56D5]" /> Nội dung khóa học
+            </h3>
+          </div>
+          <div className="flex-1 overflow-y-auto no-scrollbar pb-10">
+            {MODULES.map((module) => (
+              <div key={module.id} className="border-b border-slate-50">
+                <button
+                  onClick={() => toggleModule(module.id)}
+                  className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors sticky top-0 z-10 border-b border-slate-200/50"
+                >
+                  <div className="text-left pr-4">
+                    <span className="font-bold text-slate-800 text-[13px] leading-snug block">
+                      {module.title}
+                    </span>
+                    <p className="text-[11px] font-medium text-slate-500 mt-1">
+                      0/{module.lessons.length} | 21:39
+                    </p>
+                  </div>
+                  <ChevronDown
+                    className={`w-4 h-4 text-slate-400 transition-transform duration-300 shrink-0 ${
+                      expandedModules.includes(module.id) ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
 
-        {/* CỘT TRÁI: NỘI DUNG BÀI GIẢNG */}
-        <main className="flex-1 overflow-y-auto bg-white h-full">
+                <AnimatePresence initial={false}>
+                  {expandedModules.includes(module.id) && (
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: "auto" }}
+                      exit={{ height: 0 }}
+                      className="overflow-hidden bg-white"
+                    >
+                      {module.lessons.map((lesson) => {
+                        const isActive = currentLesson.id === lesson.id;
+                        const isLocked = lesson.status === "locked";
+                        return (
+                          <div
+                            key={lesson.id}
+                            onClick={() =>
+                              !isLocked && setCurrentLesson(lesson)
+                            }
+                            className={`flex items-start gap-3 px-5 py-3 transition-all border-b border-slate-50 cursor-pointer ${
+                              isActive
+                                ? "bg-[#0B56D510] border-l-4 border-l-[#0B56D5]"
+                                : "hover:bg-slate-50 border-l-4 border-l-transparent"
+                            } ${
+                              isLocked
+                                ? "opacity-50 grayscale-[0.3] cursor-not-allowed"
+                                : ""
+                            }`}
+                          >
+                            <div className="flex-1">
+                              <p
+                                className={`text-[13px] font-medium leading-tight ${
+                                  isActive ? "text-[#0B56D5]" : "text-slate-800"
+                                }`}
+                              >
+                                {lesson.title}
+                              </p>
+                              <div className="flex items-center gap-2 mt-2 text-[11px] text-slate-400 font-medium">
+                                <PlayCircle
+                                  className={`w-3.5 h-3.5 ${isActive ? "text-[#0B56D5]" : ""}`}
+                                />
+                                <span>{lesson.duration}</span>
+                              </div>
+                            </div>
+                            <div className="mt-1 shrink-0">
+                              {lesson.status === "completed" ? (
+                                <CheckCircle2 className="w-4 h-4 text-emerald-500 fill-emerald-50" />
+                              ) : isLocked ? (
+                                <Lock className="w-3.5 h-3.5 text-slate-300" />
+                              ) : (
+                                <div
+                                  className={`w-3.5 h-3.5 rounded-full border-2 ${
+                                    isActive
+                                      ? "border-[#0B56D5]"
+                                      : "border-slate-300"
+                                  }`}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </aside>
+
+        {/* CỘT 2 (GIỮA): NỘI DUNG BÀI GIẢNG */}
+        <main className="flex-1 overflow-y-auto bg-slate-50 relative h-full">
           {/* Video Player */}
-          <div className="w-full bg-black aspect-video flex items-center justify-center relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
-            <button className="w-16 h-16 bg-[#0B56D5] rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-10">
-              <PlayCircle className="w-10 h-10 text-white fill-white/20" />
-            </button>
+          <div className="w-full bg-black flex justify-center border-b border-slate-800">
+            <div className="w-full max-w-[1200px] aspect-video flex items-center justify-center relative">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <button className="w-16 h-16 bg-[#0B56D5] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(11,86,213,0.4)] hover:scale-110 transition-all z-10 group">
+                <PlayCircle className="w-10 h-10 text-white fill-white/20 group-hover:fill-white/40 transition-colors" />
+              </button>
+            </div>
           </div>
 
           {/* Text Content & Tabs */}
-          <div className="p-6 md:p-10 mx-auto w-full">
+          <div className="p-6 md:p-8 lg:p-10 mx-auto w-full bg-white xl:mt-6 xl:rounded-2xl xl:shadow-sm xl:border xl:border-slate-200 mb-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
               <h2 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight">
                 {currentLesson.title}
@@ -236,8 +310,7 @@ export default function CoursePlayer() {
                 className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-semibold transition-colors shrink-0"
               >
                 <Plus className="w-4 h-4" />
-                Thêm ghi chú tại{" "}
-                <span className="text-[#0B56D5]">00:00</span>
+                Thêm ghi chú tại <span className="text-[#0B56D5]">00:00</span>
               </button>
             </div>
 
@@ -249,19 +322,21 @@ export default function CoursePlayer() {
             <div className="border-b border-slate-200 flex gap-8 mb-6">
               <button
                 onClick={() => setActiveTab("content")}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${activeTab === "content"
-                  ? "border-[#0B56D5] text-[#0B56D5]"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
-                  }`}
+                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${
+                  activeTab === "content"
+                    ? "border-[#0B56D5] text-[#0B56D5]"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
               >
                 Nội dung văn bản
               </button>
               <button
                 onClick={() => setActiveTab("attachments")}
-                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${activeTab === "attachments"
-                  ? "border-[#0B56D5] text-[#0B56D5]"
-                  : "border-transparent text-slate-500 hover:text-slate-800"
-                  }`}
+                className={`pb-3 text-sm font-bold border-b-2 transition-colors duration-300 ${
+                  activeTab === "attachments"
+                    ? "border-[#0B56D5] text-[#0B56D5]"
+                    : "border-transparent text-slate-500 hover:text-slate-800"
+                }`}
               >
                 Tài liệu đính kèm
               </button>
@@ -308,7 +383,7 @@ export default function CoursePlayer() {
                           <Clock className="w-3.5 h-3.5" />
                           {item.time}
                         </div>
-                        <p className="text-slate-700 text-sm md:text-[15px] leading-relaxed group-hover:text-black">
+                        <p className="text-slate-700 text-sm md:text-[15px] leading-relaxed group-hover:text-black mt-0.5">
                           {item.text}
                         </p>
                       </div>
@@ -330,7 +405,7 @@ export default function CoursePlayer() {
                           <p className="font-bold text-slate-800 text-sm">
                             Source_Code_Bai_1.zip
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-slate-500 mt-0.5">
                             1.2 MB • ZIP Archive
                           </p>
                         </div>
@@ -346,98 +421,61 @@ export default function CoursePlayer() {
           </div>
         </main>
 
-        {/* CỘT PHẢI: PLAYLIST */}
-        <aside className="w-[350px] lg:w-[400px] border-l border-slate-200 hidden lg:flex flex-col bg-white h-full shrink-0">
-          <div className="p-4 border-b border-slate-100 shrink-0 bg-white shadow-sm z-10">
-            <h3 className="font-bold text-slate-800 flex items-center gap-2 uppercase text-xs tracking-wider">
-              <List className="w-4 h-4 text-[#0B56D5]" /> Nội dung khóa học
-            </h3>
+        {/* CỘT 3 (PHẢI): CHAT AI */}
+        <aside className="w-[300px] xl:w-[350px] border-l border-slate-200 hidden md:flex flex-col bg-white h-full shrink-0 z-10 min-h-0">
+          <div className="bg-slate-50 border-b border-slate-200 p-4 flex items-center gap-3 shrink-0">
+            <div className="bg-[#0B56D5] p-2 rounded-lg shadow-sm">
+              <Bot className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-800 text-sm">
+                F8 AI Assistant
+              </h3>
+              <p className="text-[11px] text-slate-500 font-medium">
+                Sẵn sàng giải đáp thắc mắc
+              </p>
+            </div>
           </div>
-          <div className="flex-1 overflow-y-auto no-scrollbar">
-            {MODULES.map((module) => (
-              <div key={module.id} className="border-b border-slate-50">
-                <button
-                  onClick={() => toggleModule(module.id)}
-                  className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors sticky top-0 z-10 border-b border-slate-200/50"
-                >
-                  <div className="text-left">
-                    <span className="font-bold text-slate-800 text-[13px]">
-                      {module.title}
-                    </span>
-                    <p className="text-[11px] text-slate-500 mt-0.5">
-                      0/{module.lessons.length} | 21:39
-                    </p>
-                  </div>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${expandedModules.includes(module.id) ? "rotate-180" : ""
-                      }`}
-                  />
-                </button>
 
-                <AnimatePresence initial={false}>
-                  {expandedModules.includes(module.id) && (
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: "auto" }}
-                      exit={{ height: 0 }}
-                      className="overflow-hidden bg-white"
-                    >
-                      {module.lessons.map((lesson) => {
-                        const isActive = currentLesson.id === lesson.id;
-                        const isLocked = lesson.status === "locked";
-                        return (
-                          <div
-                            key={lesson.id}
-                            onClick={() =>
-                              !isLocked && setCurrentLesson(lesson)
-                            }
-                            className={`flex items-start gap-3 px-5 py-3 transition-all border-b border-slate-50 cursor-pointer ${isActive
-                              ? "bg-[#0B56D510] border-l-4 border-l-[#0B56D5]"
-                              : "hover:bg-slate-50"
-                              } ${isLocked
-                                ? "opacity-50 grayscale-[0.3] cursor-not-allowed"
-                                : ""
-                              }`}
-                          >
-                            <div className="flex-1">
-                              <p
-                                className={`text-[13px] font-medium leading-tight ${isActive
-                                  ? "text-[#0B56D5]"
-                                  : "text-slate-800"
-                                  }`}
-                              >
-                                {lesson.title}
-                              </p>
-                              <div className="flex items-center gap-2 mt-2 text-[11px] text-slate-400">
-                                <PlayCircle
-                                  className={`w-3.5 h-3.5 ${isActive ? "text-[#0B56D5]" : ""
-                                    }`}
-                                />
-                                <span>{lesson.duration}</span>
-                              </div>
-                            </div>
-                            <div className="mt-1 shrink-0">
-                              {lesson.status === "completed" ? (
-                                <CheckCircle2 className="w-4 h-4 text-emerald-500 fill-emerald-50" />
-                              ) : isLocked ? (
-                                <Lock className="w-3.5 h-3.5 text-slate-300" />
-                              ) : (
-                                <div
-                                  className={`w-3.5 h-3.5 rounded-full border-2 ${isActive
-                                    ? "border-[#0B56D5]"
-                                    : "border-slate-300"
-                                    }`}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 bg-white space-y-4 text-sm no-scrollbar">
+            {chatMessages.map((msg, i) =>
+              msg.role === "bot" ? (
+                <div key={i} className="flex gap-2">
+                  <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100">
+                    <Bot className="w-4 h-4 text-[#0B56D5]" />
+                  </div>
+                  <div
+                    className="bg-slate-50 border border-slate-100 p-3 rounded-2xl rounded-tl-sm text-slate-700"
+                    dangerouslySetInnerHTML={{ __html: msg.text }}
+                  />
+                </div>
+              ) : (
+                <div key={i} className="flex justify-end">
+                  <div className="bg-[#0B56D5] text-white p-3 rounded-2xl rounded-tr-sm text-sm max-w-[85%] shadow-sm">
+                    {msg.text}
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+
+          <div className="p-4 bg-white border-t border-slate-100 shrink-0">
+            <div className="relative flex items-center shadow-sm rounded-full bg-slate-50 border border-slate-200 focus-within:border-[#0B56D5]/50 focus-within:ring-2 focus-within:ring-[#0B56D5]/10 transition-all">
+              <input
+                type="text"
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSendChat()}
+                placeholder="Hỏi AI về bài học..."
+                className="w-full bg-transparent text-sm rounded-full pl-4 pr-12 py-3 outline-none"
+              />
+              <button
+                onClick={handleSendChat}
+                className="absolute right-1.5 w-8 h-8 bg-[#0B56D5] hover:bg-[#0944b0] transition-colors text-white rounded-full flex items-center justify-center"
+              >
+                <Send className="w-4 h-4 ml-[-2px]" />
+              </button>
+            </div>
           </div>
         </aside>
       </div>
@@ -502,117 +540,9 @@ export default function CoursePlayer() {
         )}
       </AnimatePresence>
 
-      {/* ===================== BONG BÓNG AI KÉO THẢ CHUỘT TRÁI ===================== */}
-      <AnimatePresence>
-        {!isChatOpen && (
-          <motion.div
-            ref={bubbleRef}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            onMouseDown={onMouseDown}
-            onClick={handleBubbleClick}
-            style={{
-              position: "absolute",
-              bottom: pos.bottom,
-              right: pos.right,
-              touchAction: "none",
-              cursor: "grab",
-              zIndex: 999,
-            }}
-            className="w-14 h-14 bg-[#0B56D5] rounded-full shadow-2xl flex items-center justify-center select-none"
-          >
-            <Bot className="w-7 h-7 text-white pointer-events-none" />
-            {/* Chấm đỏ thông báo */}
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 pointer-events-none">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-white" />
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ===================== CỬA SỔ CHAT AI ===================== */}
-      <AnimatePresence>
-        {isChatOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            className="absolute bottom-[80px] right-[420px] w-[350px] h-[450px] bg-white rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100 flex flex-col z-[45] overflow-hidden"
-          >
-            {/* Chat Header */}
-            <div className="bg-[#0B56D5] p-4 flex justify-between items-center text-white shrink-0">
-              <div className="flex items-center gap-2">
-                <div className="bg-white/20 p-1.5 rounded-lg">
-                  <Bot className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-sm leading-tight">
-                    F8 AI Assistant
-                  </h4>
-                  <p className="text-[11px] text-blue-100">
-                    Luôn sẵn sàng hỗ trợ
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsChatOpen(false)}
-                className="p-1 hover:bg-white/20 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Chat Body */}
-            <div className="flex-1 p-4 bg-slate-50/50 overflow-y-auto text-sm space-y-3">
-              {chatMessages.map((msg, i) =>
-                msg.role === "bot" ? (
-                  <div key={i} className="flex gap-2">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
-                      <Bot className="w-4 h-4 text-[#0B56D5]" />
-                    </div>
-                    <div
-                      className="bg-white border border-slate-100 p-3 rounded-2xl rounded-tl-sm text-slate-600 shadow-sm"
-                      dangerouslySetInnerHTML={{ __html: msg.text }}
-                    />
-                  </div>
-                ) : (
-                  <div key={i} className="flex justify-end">
-                    <div className="bg-[#0B56D5] text-white p-3 rounded-2xl rounded-tr-sm text-sm max-w-[80%]">
-                      {msg.text}
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-
-            {/* Chat Input */}
-            <div className="p-3 bg-white border-t border-slate-100 shrink-0">
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSendChat()}
-                  placeholder="Hỏi AI về bài học..."
-                  className="w-full bg-slate-100 text-sm rounded-full pl-4 pr-12 py-2.5 outline-none focus:ring-2 focus:ring-[#0B56D5]/20 focus:bg-white transition-all border border-transparent focus:border-[#0B56D5]/30"
-                />
-                <button
-                  onClick={handleSendChat}
-                  className="absolute right-1 w-8 h-8 bg-[#0B56D5] hover:bg-[#0944b0] transition-colors text-white rounded-full flex items-center justify-center"
-                >
-                  <Send className="w-4 h-4 ml-[-2px]" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* ===================== FOOTER ===================== */}
-      <footer className="absolute bottom-0 left-0 right-0 h-[60px] bg-white border-t border-slate-200 flex items-center justify-between px-6 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
-        <button className="flex items-center gap-1.5 text-[13px] font-bold text-slate-600 hover:text-[#0B56D5] transition-colors group">
+      <footer className="h-[60px] shrink-0 bg-white border-t border-slate-200 flex items-center justify-between px-6 z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] relative">
+        <button className="flex items-center gap-1.5 text-[12px] font-bold text-slate-500 hover:text-[#0B56D5] transition-colors group">
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />{" "}
           BÀI TRƯỚC
         </button>
